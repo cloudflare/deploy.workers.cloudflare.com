@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./tailwind.css";
 import "./main.css";
 
 import { Machine } from "xstate";
 import { useMachine } from "@xstate/react";
 
+import { EdgeStateContext } from "./edge_state";
 import Embed from "./embed";
 
 export const appMachine = Machine({
@@ -64,8 +65,7 @@ const GithubAuth = ({ current, send }) => (
       <div className="mt-4">
         <a
           className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900 transition ease-in-out duration-150"
-          href="#"
-          onClick={() => send("AUTH")}
+          href="/login"
         >
           <svg
             role="img"
@@ -239,6 +239,14 @@ const Deploy = ({ current, send }) => (
 
 const App = () => {
   const [current, send] = useMachine(appMachine);
+  const [url, setUrl] = useState(null);
+  const [edgeState] = useContext(EdgeStateContext);
+  useEffect(() => {
+    if (edgeState && edgeState.authed) send("AUTH");
+    const windowUrl = new URL(window.location);
+    setUrl(windowUrl.searchParams.get("url"));
+  });
+
   const submit = evt => {
     evt.preventDefault();
     setTimeout(() => {
@@ -248,16 +256,6 @@ const App = () => {
     // set secret
     // start github action
   };
-
-  // useEffect(() => {
-  //   setTimeout(send("AUTH"), 1000);
-  // }, []);
-
-  const [url, setUrl] = useState(null);
-  useEffect(() => {
-    const windowUrl = new URL(window.location);
-    setUrl(windowUrl.searchParams.get("url"));
-  });
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center align-content">
@@ -280,7 +278,12 @@ const App = () => {
           </div>
           <div className="border-t border-gray-200 px-4 py-4 sm:px-6">
             <p class="text-center text-base leading-6 text-gray-400">
-              ❤️ Find the source for this project on GitHub
+              <a
+                className="text-indigo-600 hover:text-indigo-500"
+                href="https://github.com/signalnerve/deploy-to-cf-workers"
+              >
+                ❤️ Find the source for this project on GitHub
+              </a>
             </p>
           </div>
         </div>

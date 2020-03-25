@@ -1,6 +1,8 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import cookie from "cookie";
-const jose = require("node-jose");
+import jose from "node-jose";
+
+import { hydrateEdgeState } from "./edge_state";
 
 const cookieKey = "Authed-User";
 
@@ -32,7 +34,12 @@ async function handleEvent(event) {
     return Response.redirect(redirectUrl);
   }
 
-  return renderApp(event, { state: { accessToken } });
+  // hard-refresh for kv consistency fun
+  if (url.searchParams.get("authed")) {
+    return Response.redirect(url.origin);
+  }
+
+  return renderApp(event, { state: { authed } });
 }
 
 const validateCookie = async event => {
@@ -105,7 +112,7 @@ const handleCallback = async event => {
   });
 
   const headers = {
-    Location: url.origin,
+    Location: url.origin + `?authed=true`,
     "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Strict;`
   };
 
@@ -118,7 +125,8 @@ const handleCallback = async event => {
 const renderApp = async (event, state = {}) => {
   let options = {};
   try {
-    return await getAssetFromKV(event, options);
+    const response = await getAssetFromKV(event, options);
+    return hydrateEdgeState({ response, state });
   } catch (e) {
     let notFoundResponse = await getAssetFromKV(event, {
       mapRequestToAsset: req =>
