@@ -1,0 +1,14 @@
+name = "deploy-to-cf-workers"
+type = "webpack"
+account_id = "dc56444c4c955a1653106ccf997c1067"
+workers_dev = true
+
+kv-namespaces = [
+  { binding = "AUTH_STORE", id = "8f005ce95ab94b98936b96d8bc46693b" }
+]
+
+[vars]
+CLIENT_ID = "Iv1.e811abeead5edcee"
+
+[site]
+bucket = "../app/build"
