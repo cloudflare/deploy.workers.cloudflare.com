@@ -8,7 +8,7 @@ kv-namespaces = [
 ]
 
 [vars]
-CLIENT_ID = "Iv1.e811abeead5edcee"
+CLIENT_ID = "c8375251e295d44406c5"
 
 [site]
 bucket = "../app/build"

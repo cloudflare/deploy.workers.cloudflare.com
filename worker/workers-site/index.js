@@ -1,6 +1,7 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import cookie from "cookie";
 import jose from "node-jose";
+import { seal } from 'tweetsodium'
 
 import { hydrateEdgeState } from "./edge_state";
 
@@ -14,12 +15,29 @@ addEventListener("fetch", event => {
   }
 });
 
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
+  var bufView = new Uint16Array(buf);
+  for (var i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+
 async function handleEvent(event) {
   const { request } = event;
   const url = new URL(request.url);
 
   if (url.pathname === "/callback") {
     return handleCallback(event);
+  }
+
+  if (url.pathname === "/secret") {
+    return handleSecret(event);
   }
 
   const { accessToken, authed, error, redirectUrl } = await validateCookie(
@@ -39,8 +57,35 @@ async function handleEvent(event) {
     return Response.redirect(url.origin);
   }
 
-  return renderApp(event, { state: { authed } });
+  return renderApp(event, { state: { accessToken } });
 }
+
+const handleSecret = async event => {
+  try {
+    const headers = event.request.headers
+    const body = await event.request.json()
+    if (body.repo && body.secret_key && body.secret_value) {
+      const keyResp = await fetch(`https://api.github.com/repos/${body.repo}/actions/secrets/public-key`, { headers })
+      const keyRespJson = await keyResp.json()
+      const { key, key_id } = keyRespJson
+      const encrypted = seal(Buffer.from(body.secret_value), Buffer.from(key, 'base64'));
+      const encrypted_value = Buffer.from(encrypted).toString('base64')
+      const secretResp = await fetch(`https://api.github.com/repos/${body.repo}/actions/secrets/${body.secret_key}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({
+          encrypted_value,
+          key_id
+        })
+      })
+      return new Response(null, { status: secretResp.status })
+    } else {
+      return new Response(null, { status: 400 })
+    }
+  } catch (err) {
+    return new Response(err.toString())
+  }
+};
 
 const validateCookie = async event => {
   try {
@@ -52,7 +97,7 @@ const validateCookie = async event => {
     if (!auth) {
       return {
         authed: false,
-        redirectUrl: `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`
+        redirectUrl: `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=public_repo`
       };
     }
 
