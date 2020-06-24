@@ -22,7 +22,7 @@ const useSSR = (callback, delay) => {
       isServer: !inBrowser,
       canUseWorkers: typeof Worker !== "undefined",
       canUseEventListeners: inBrowser && !!window.addEventListener,
-      canUseViewport: inBrowser && !!window.screen
+      canUseViewport: inBrowser && !!window.screen,
     }),
     [inBrowser]
   );
@@ -33,7 +33,7 @@ const useSSR = (callback, delay) => {
   );
 };
 
-const parseDocumentState = key => {
+const parseDocumentState = (key) => {
   const edgeStateElement = document.querySelector("#edge_state");
   try {
     const jsonData = JSON.parse(edgeStateElement.innerText);

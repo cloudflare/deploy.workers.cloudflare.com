@@ -8,28 +8,45 @@ import { useMachine } from "@xstate/react";
 import { EdgeStateContext } from "./edge_state";
 import Embed from "./embed";
 
+const TEMPLATES = [
+  "https://github.com/bytesizedxyz/cloudflare-worker-cra",
+  "https://github.com/cherry/placeholders.dev/",
+  "https://github.com/adamschwartz/web.scraper.workers.dev",
+  "https://github.com/signalnerve/workers-graphql-server",
+  "https://github.com/wilsonzlin/edgesearch",
+  "https://github.com/signalnerve/cloudflare-workers-todos",
+  "https://github.com/twoflags-io/twoflags-api",
+  "https://github.com/signalnerve/repo-hunt",
+];
+
 export const appMachine = Machine({
   id: "app",
   initial: "initial",
   states: {
     initial: {
-      on: { AUTH: "configuring" }
+      on: {
+        NO_AUTH: "login",
+        AUTH: "templates",
+        URL: "configuring",
+      },
     },
+    login: {},
+    templates: {},
     configuring: {
-      on: { SUBMIT: "deploying_setup" }
+      on: { SUBMIT: "deploying_setup" },
     },
     deploying_setup: {
-      on: { ERROR: "error_forking", SETUP: "deploying" }
+      on: { ERROR: "error_forking", SETUP: "deploying" },
     },
     deploying: {
-      on: { ERROR: "error_forking", COMPLETE: "completed" }
+      on: { ERROR: "error_forking", COMPLETE: "completed" },
     },
     completed: {
-      type: "final"
+      type: "final",
     },
     error_forking: {},
-    error_starting_deploy: {}
-  }
+    error_starting_deploy: {},
+  },
 });
 
 const GithubAuth = ({ current }) => (
@@ -37,10 +54,10 @@ const GithubAuth = ({ current }) => (
     <div
       className={[
         `flex items-center text-lg leading-6 font-medium`,
-        current.matches("initial") ? "text-black" : "text-gray-600"
+        current.matches("login") ? "text-black" : "text-gray-600",
       ].join(" ")}
     >
-      {current.matches("initial") ? (
+      {current.matches("login") ? (
         <>
           <svg fill="currentColor" viewBox="0 0 20 20" class="w-8 h-8 mr-2">
             <path
@@ -64,7 +81,7 @@ const GithubAuth = ({ current }) => (
         </>
       )}
     </div>
-    {current.matches("initial") && (
+    {current.matches("login") && (
       <div className="mt-4">
         <a
           className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900 transition ease-in-out duration-150"
@@ -96,10 +113,12 @@ const Fork = ({ current, submit }) => {
       <div
         className={[
           `flex items-center`,
-          current.matches("configuring") ? "text-black" : "text-gray-600"
+          current.matches("configuring") ? "text-black" : "text-gray-600",
         ].join(" ")}
       >
-        {(current.matches("initial") || current.matches("configuring")) && (
+        {(current.matches("initial") ||
+          current.matches("login") ||
+          current.matches("configuring")) && (
           <>
             <svg fill="currentColor" viewBox="0 0 20 20" class="w-8 h-8 mr-2">
               <path
@@ -129,7 +148,7 @@ const Fork = ({ current, submit }) => {
       {current.matches("configuring") ? (
         <form
           className="py-6"
-          onSubmit={event => submit({ accountId, apiToken, event })}
+          onSubmit={(event) => submit({ accountId, apiToken, event })}
         >
           <div>
             <label
@@ -212,11 +231,11 @@ const Deploy = ({ current, deploy, forkedRepo, send }) => (
         `flex items-center text-lg leading-6 font-medium`,
         current.matches("deploying") || current.matches("deploying_setup")
           ? "text-black"
-          : "text-gray-600"
+          : "text-gray-600",
       ].join(" ")}
     >
-      <>
-        {current.matches("completed") ? (
+      {current.matches("completed") ? (
+        <>
           <svg fill="currentColor" viewBox="0 0 20 20" class="w-8 h-8 mr-2">
             <path
               fill-rule="evenodd"
@@ -224,7 +243,10 @@ const Deploy = ({ current, deploy, forkedRepo, send }) => (
               clip-rule="evenodd"
             ></path>
           </svg>
-        ) : (
+          <span>Application deployed</span>
+        </>
+      ) : (
+        <>
           <svg fill="currentColor" viewBox="0 0 20 20" class="w-8 h-8 mr-2">
             <path
               fill-rule="evenodd"
@@ -232,9 +254,9 @@ const Deploy = ({ current, deploy, forkedRepo, send }) => (
               clip-rule="evenodd"
             ></path>
           </svg>
-        )}
-        <span>Deploy with GitHub Actions</span>
-      </>
+          <span>Deploy with GitHub Actions</span>
+        </>
+      )}
     </div>
     <div className="mt-4">
       {(current.matches("deploying") || current.matches("deploying_setup")) && (
@@ -268,7 +290,7 @@ const Deploy = ({ current, deploy, forkedRepo, send }) => (
                   `w-full flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out`,
                   current.matches("deploying_setup")
                     ? "opacity-50 cursor-not-allowed"
-                    : ""
+                    : "",
                 ].join(" ")}
                 disabled={current.matches("deploying_setup")}
                 onClick={deploy}
@@ -290,20 +312,80 @@ const Deploy = ({ current, deploy, forkedRepo, send }) => (
           </div>
         </>
       )}
+      {current.matches("completed") && (
+        <div className="mt-4">
+          <a
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-800 hover:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo active:bg-indigo-900 transition ease-in-out duration-150"
+            href={`https://github.com/${forkedRepo}`}
+          >
+            <svg
+              role="img"
+              fill="white"
+              className="w-6 mr-4"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>GitHub icon</title>
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+            </svg>
+            View your project on GitHub
+          </a>
+        </div>
+      )}
     </div>
   </div>
 );
+
+const Templates = ({ current }) =>
+  current.matches("templates") ? (
+    <div className="py-2 text-lg leading-6 font-medium">
+      <div className="flex items-center text-black">
+        <>
+          <svg
+            fill="currentColor"
+            className="w-8 h-8 mr-2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+          </svg>
+          <span>Find a project to deploy to Cloudflare Workers</span>
+        </>
+      </div>
+
+      <div className="py-8 grid grid-cols-2 gap-8">
+        {TEMPLATES.map((template) => (
+          <Embed
+            key={template}
+            linkUrl={`${window.location}?url=${template}`}
+            url={template}
+          />
+        ))}
+      </div>
+    </div>
+  ) : null;
 
 const App = () => {
   const [current, send] = useMachine(appMachine);
   const [url, setUrl] = useState(null);
   const [forkedRepo, setForkedRepo] = useState(null);
   const [edgeState] = useContext(EdgeStateContext);
+  const [debug, setDebug] = useState(false);
+
   useEffect(() => {
-    if (edgeState && edgeState.accessToken) send("AUTH");
     const windowUrl = new URL(window.location);
-    setUrl(windowUrl.searchParams.get("url"));
-  });
+    const url = windowUrl.searchParams.get("url");
+    if (url) setUrl(url);
+
+    if (edgeState && edgeState.accessToken) {
+      send(url ? "URL" : "AUTH");
+    } else {
+      send("NO_AUTH");
+    }
+  }, []);
 
   const fork = async ({ accountId, apiToken, event }) => {
     const regex = /github.com\/(?<owner>\w*)\/(?<repo>.*)/;
@@ -317,8 +399,8 @@ const App = () => {
         method: "POST",
         headers: {
           Authorization: `token ${edgeState.accessToken}`,
-          "User-Agent": "Deploy-to-CF-Workers"
-        }
+          "User-Agent": "Deploy-to-CF-Workers",
+        },
       }
     );
     const repo = await resp.json();
@@ -328,26 +410,26 @@ const App = () => {
       body: JSON.stringify({
         repo: repo.full_name,
         secret_key: "CF_ACCOUNT_ID",
-        secret_value: accountId
+        secret_value: accountId,
       }),
       method: "POST",
       headers: {
         Authorization: `token ${edgeState.accessToken}`,
-        "User-Agent": "Deploy-to-CF-Workers"
-      }
+        "User-Agent": "Deploy-to-CF-Workers",
+      },
     });
 
     await fetch(`/secret`, {
       body: JSON.stringify({
         repo: repo.full_name,
         secret_key: "CF_API_TOKEN",
-        secret_value: apiToken
+        secret_value: apiToken,
       }),
       method: "POST",
       headers: {
         Authorization: `token ${edgeState.accessToken}`,
-        "User-Agent": "Deploy-to-CF-Workers"
-      }
+        "User-Agent": "Deploy-to-CF-Workers",
+      },
     });
     send("SUBMIT");
 
@@ -357,13 +439,13 @@ const App = () => {
   const dispatchEvent = async () => {
     await fetch(`https://api.github.com/repos/${forkedRepo}/dispatches`, {
       body: JSON.stringify({
-        event_type: "deploy_to_cf_workers"
+        event_type: "deploy_to_cf_workers",
       }),
       method: "POST",
       headers: {
         Authorization: `token ${edgeState.accessToken}`,
-        "User-Agent": "Deploy-to-CF-Workers"
-      }
+        "User-Agent": "Deploy-to-CF-Workers",
+      },
     });
     send("COMPLETE");
   };
@@ -375,10 +457,18 @@ const App = () => {
     <div className="bg-gray-100 min-h-screen flex items-center align-content">
       <div className="h-screen w-full md:w-2/3 mx-auto md:py-12 md:px-4 md:px-6 lg:px-8">
         <div className="h-full bg-white overflow-hidden shadow md:rounded-lg flex flex-col">
-          <div className="border-b border-gray-200 px-4 py-5 sm:px-6">
-            <h1 className="text-2xl font-bold leading-7 sm:text-3xl sm:leading-9 sm:truncate">
-              Deploy to Cloudflare Workers
+          <div className="border-b border-gray-200 px-4 py-5 sm:px-6 flex items-center">
+            <h1
+              className="text-2xl font-bold leading-7 sm:text-3xl sm:leading-9 sm:truncate flex-1"
+              onClick={() => setDebug(!debug)}
+            >
+              Deploy to Cloudflare Workers{" "}
             </h1>
+            {debug && (
+              <p className="p-1 text-right bg-gray-200 font-mono">
+                🔧 {current.value}
+              </p>
+            )}
           </div>
           {url ? (
             <div className="border-b border-gray-200 px-4 py-5 sm:p-6">
@@ -386,22 +476,25 @@ const App = () => {
             </div>
           ) : null}
           <div className="flex-1 px-4 py-5 sm:p-6">
-            <GithubAuth current={current} />
-            <Fork current={current} submit={fork} />
-            <Deploy
-              current={current}
-              deploy={dispatchEvent}
-              forkedRepo={forkedRepo}
-              send={send}
-            />
+            <>
+              <Templates current={current} />
+              <GithubAuth current={current} />
+              <Fork current={current} submit={fork} />
+              <Deploy
+                current={current}
+                deploy={dispatchEvent}
+                forkedRepo={forkedRepo}
+                send={send}
+              />
+            </>
           </div>
           <div className="border-t border-gray-200 px-4 py-4 sm:px-6">
             <p class="text-center text-base leading-6 text-gray-400">
               <a
                 className="text-indigo-600 hover:text-indigo-500"
-                href="https://github.com/signalnerve/deploy-to-cf-workers"
+                href="https://github.com/signalnerve/deploy-to-cf-workers/blob/master/DEVELOPERS.md"
               >
-                ❤️ Find the source for this project on GitHub
+                Developer Guide
               </a>
             </p>
           </div>
