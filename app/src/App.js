@@ -164,6 +164,7 @@ const Fork = ({ current, submit }) => {
                 onChange={({ target: { value } }) => setApiToken(value)}
                 placeholder="Cloudflare Workers API Token"
                 required
+                type="password"
                 value={apiToken}
               />
             </div>
