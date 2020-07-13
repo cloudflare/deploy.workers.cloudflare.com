@@ -15,19 +15,6 @@ addEventListener("fetch", (event) => {
   }
 });
 
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
-
-function str2ab(str) {
-  var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-  var bufView = new Uint16Array(buf);
-  for (var i = 0, strLen = str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
-  }
-  return buf;
-}
-
 async function handleEvent(event) {
   const { request } = event;
   const url = new URL(request.url);
@@ -51,10 +38,6 @@ async function handleEvent(event) {
     event
   );
 
-  if (error) {
-    return new Response(error, { status: 500 });
-  }
-
   if (url.pathname === "/login" && !authed && redirectUrl) {
     return Response.redirect(redirectUrl);
   }
@@ -64,7 +47,7 @@ async function handleEvent(event) {
     return Response.redirect(url.origin);
   }
 
-  return renderApp(event, { state: { accessToken } });
+  return renderApp(event, { error, state: { accessToken } });
 }
 
 const handleSecret = async (event) => {
@@ -126,6 +109,17 @@ const validateCookie = async (event) => {
     );
 
     const { access_token: accessToken } = JSON.parse(payload);
+
+    const tokenResp = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `token ${accessToken}`,
+        "User-Agent": "Deploy-to-CF-Workers",
+      },
+    });
+
+    if (tokenResp.status > 201) {
+      throw new Error("GitHub API response was invalid");
+    }
     return { accessToken, authed: true };
   } catch (error) {
     return {
@@ -183,10 +177,13 @@ const handleCallback = async (event) => {
   });
 };
 
-const renderApp = async (event, state = {}) => {
+const renderApp = async (event, { error = null, state = {} }) => {
   let options = {};
   try {
     const response = await getAssetFromKV(event, options);
+    if (error) {
+      response.headers.set("Set-cookie", "Authed-User=null; Max-Age=0");
+    }
     return hydrateEdgeState({ response, state });
   } catch (e) {
     let notFoundResponse = await getAssetFromKV(event, {

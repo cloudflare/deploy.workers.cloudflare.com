@@ -6,7 +6,7 @@ class EdgeStateEmbed {
   element(element) {
     const edgeStateElement = `
       <script id='edge_state' type='application/json'>
-        ${JSON.stringify({ ...this._state })}
+        ${JSON.stringify({ state: { ...this._state } })}
       </script>
     `;
     element.prepend(edgeStateElement, { html: true });
