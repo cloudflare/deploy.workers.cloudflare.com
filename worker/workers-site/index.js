@@ -1,13 +1,13 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import cookie from "cookie";
 import jose from "node-jose";
-import { seal } from 'tweetsodium'
+import { seal } from "tweetsodium";
 
 import { hydrateEdgeState } from "./edge_state";
 
 const cookieKey = "Authed-User";
 
-addEventListener("fetch", event => {
+addEventListener("fetch", (event) => {
   try {
     event.respondWith(handleEvent(event));
   } catch (e) {
@@ -31,6 +31,13 @@ function str2ab(str) {
 async function handleEvent(event) {
   const { request } = event;
   const url = new URL(request.url);
+
+  if (url.pathname === "/button") {
+    return await getAssetFromKV(event, {
+      mapRequestToAsset: (req) =>
+        new Request(`${new URL(req.url).origin}/deploy.svg`, req),
+    });
+  }
 
   if (url.pathname === "/callback") {
     return handleCallback(event);
@@ -60,34 +67,43 @@ async function handleEvent(event) {
   return renderApp(event, { state: { accessToken } });
 }
 
-const handleSecret = async event => {
+const handleSecret = async (event) => {
   try {
-    const headers = event.request.headers
-    const body = await event.request.json()
+    const headers = event.request.headers;
+    const body = await event.request.json();
     if (body.repo && body.secret_key && body.secret_value) {
-      const keyResp = await fetch(`https://api.github.com/repos/${body.repo}/actions/secrets/public-key`, { headers })
-      const keyRespJson = await keyResp.json()
-      const { key, key_id } = keyRespJson
-      const encrypted = seal(Buffer.from(body.secret_value), Buffer.from(key, 'base64'));
-      const encrypted_value = Buffer.from(encrypted).toString('base64')
-      const secretResp = await fetch(`https://api.github.com/repos/${body.repo}/actions/secrets/${body.secret_key}`, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify({
-          encrypted_value,
-          key_id
-        })
-      })
-      return new Response(null, { status: secretResp.status })
+      const keyResp = await fetch(
+        `https://api.github.com/repos/${body.repo}/actions/secrets/public-key`,
+        { headers }
+      );
+      const keyRespJson = await keyResp.json();
+      const { key, key_id } = keyRespJson;
+      const encrypted = seal(
+        Buffer.from(body.secret_value),
+        Buffer.from(key, "base64")
+      );
+      const encrypted_value = Buffer.from(encrypted).toString("base64");
+      const secretResp = await fetch(
+        `https://api.github.com/repos/${body.repo}/actions/secrets/${body.secret_key}`,
+        {
+          method: "PUT",
+          headers,
+          body: JSON.stringify({
+            encrypted_value,
+            key_id,
+          }),
+        }
+      );
+      return new Response(null, { status: secretResp.status });
     } else {
-      return new Response(null, { status: 400 })
+      return new Response(null, { status: 400 });
     }
   } catch (err) {
-    return new Response(err.toString())
+    return new Response(err.toString());
   }
 };
 
-const validateCookie = async event => {
+const validateCookie = async (event) => {
   try {
     const { request } = event;
     const cookieHeader = request.headers.get("Cookie");
@@ -97,7 +113,7 @@ const validateCookie = async event => {
     if (!auth) {
       return {
         authed: false,
-        redirectUrl: `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=public_repo`
+        redirectUrl: `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=public_repo`,
       };
     }
 
@@ -114,12 +130,12 @@ const validateCookie = async event => {
   } catch (error) {
     return {
       authed: false,
-      error
+      error,
     };
   }
 };
 
-const handleCallback = async event => {
+const handleCallback = async (event) => {
   const url = new URL(event.request.url);
   const code = url.searchParams.get("code");
 
@@ -127,13 +143,13 @@ const handleCallback = async event => {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      accept: "application/json"
+      accept: "application/json",
     },
     body: JSON.stringify({
       client_id: CLIENT_ID,
       client_secret: CLIENT_SECRET,
-      code
-    })
+      code,
+    }),
   });
 
   const result = await response.json();
@@ -145,7 +161,7 @@ const handleCallback = async event => {
   const key = await jose.JWK.createKey("oct", 256, { alg: "A256GCM" });
   const jsonKey = key.toJSON(true);
   await AUTH_STORE.put(`keys:${jsonKey.kid}`, JSON.stringify(jsonKey), {
-    expirationTtl: 3600
+    expirationTtl: 3600,
   });
 
   const encrypted = await jose.JWE.createEncrypt(key)
@@ -153,17 +169,17 @@ const handleCallback = async event => {
     .final();
 
   await AUTH_STORE.put(`auth:${jsonKey.kid}`, JSON.stringify(encrypted), {
-    expirationTtl: 3600
+    expirationTtl: 3600,
   });
 
   const headers = {
     Location: url.origin + `?authed=true`,
-    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Strict;`
+    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Strict;`,
   };
 
   return new Response(null, {
     headers,
-    status: 301
+    status: 301,
   });
 };
 
@@ -174,13 +190,13 @@ const renderApp = async (event, state = {}) => {
     return hydrateEdgeState({ response, state });
   } catch (e) {
     let notFoundResponse = await getAssetFromKV(event, {
-      mapRequestToAsset: req =>
-        new Request(`${new URL(req.url).origin}/404.html`, req)
+      mapRequestToAsset: (req) =>
+        new Request(`${new URL(req.url).origin}/404.html`, req),
     });
 
     return new Response(notFoundResponse.body, {
       ...notFoundResponse,
-      status: 404
+      status: 404,
     });
   }
 };
