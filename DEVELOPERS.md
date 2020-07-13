@@ -39,3 +39,5 @@ deploy:
 ```md
 [![Deploy to Cloudflare Workers](https://deploy-to-cf-workers.signalnerve.workers.dev/button)](https://deploy-to-cf-workers.signalnerve.workers.dev/?url=https://github.com/YOURUSERNAME/YOURREPO)
 ```
+
+![Deploy to Cloudflare Workers](https://deploy-to-cf-workers.signalnerve.workers.dev/button)
