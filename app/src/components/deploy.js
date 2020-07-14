@@ -1,4 +1,5 @@
 import React from "react";
+import WorkflowStatus from "./workflow-status";
 
 export default ({ current, deploy, forkedRepo, send }) => (
   <div className="py-2">
@@ -19,7 +20,7 @@ export default ({ current, deploy, forkedRepo, send }) => (
               clip-rule="evenodd"
             ></path>
           </svg>
-          <span>Application deployed</span>
+          <span>Deployment configured</span>
         </>
       ) : (
         <>
@@ -54,11 +55,7 @@ export default ({ current, deploy, forkedRepo, send }) => (
                 </a>
               </p>
             </div>
-          ) : (
-            <div className="mt-4 text-sm">
-              <p>GitHub Actions enabled on this repository.</p>
-            </div>
-          )}
+          ) : null}
           <div class="mt-6">
             <span class="block w-full rounded-md shadow-sm">
               <button
@@ -90,6 +87,7 @@ export default ({ current, deploy, forkedRepo, send }) => (
       )}
       {current.matches("completed") && (
         <div className="mt-4">
+          <WorkflowStatus repo={forkedRepo} />
           <a
             className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-800 hover:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo active:bg-indigo-900 transition ease-in-out duration-150"
             href={`https://github.com/${forkedRepo}`}

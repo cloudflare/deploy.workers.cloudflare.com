@@ -37,7 +37,7 @@ export default ({ current, submit }) => {
                 clip-rule="evenodd"
               ></path>
             </svg>
-            <span>Forked and configured application</span>
+            <span>Application forked</span>
           </>
         )}
       </div>
@@ -86,7 +86,10 @@ export default ({ current, submit }) => {
           </div>
 
           <p class="mt-2 text-sm text-indigo-500">
-            <a href="https://developers.cloudflare.com/workers/quickstart#configure">
+            <a
+              href="https://developers.cloudflare.com/workers/quickstart#configure"
+              target="_blank"
+            >
               Learn about finding your Cloudflare Workers Account ID and API
               Token →
             </a>
