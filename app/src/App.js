@@ -60,9 +60,11 @@ const App = () => {
 
   const fork = async ({ accountId, apiToken, event }) => {
     const regex = /github.com\/(?<owner>\w*)\/(?<repo>.*)/;
-    let repoUrl = url && url.match(regex);
+    let urlToMatch = url;
+    if (urlToMatch.endsWith("/")) urlToMatch = urlToMatch.slice(0, -1);
+
+    const repoUrl = urlToMatch && urlToMatch.match(regex);
     // Remove trailing slash if it exists
-    if (repoUrl.endsWith("/")) repoUrl = repoUrl.slice(0, -1);
     event.preventDefault();
 
     // should move into loading here
