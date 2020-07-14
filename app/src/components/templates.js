@@ -32,7 +32,7 @@ export default ({ current }) =>
         </>
       </div>
 
-      <div className="py-8 grid grid-cols-2 gap-8">
+      <div className="py-8 grid grid-cols-1 xl:grid-cols-2 gap-8">
         {TEMPLATES.map((template) => (
           <Embed
             key={template}

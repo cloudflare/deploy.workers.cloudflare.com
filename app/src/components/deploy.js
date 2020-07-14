@@ -1,4 +1,5 @@
 import React from "react";
+import WorkflowStatus from "./workflow-status";
 
 export default ({ accountId, current, deploy, forkedRepo, send }) => (
   <div className="py-2">
@@ -19,7 +20,7 @@ export default ({ accountId, current, deploy, forkedRepo, send }) => (
               clip-rule="evenodd"
             ></path>
           </svg>
-          <span>Application deployed</span>
+          <span>Deployment configured</span>
         </>
       ) : (
         <>
@@ -54,11 +55,7 @@ export default ({ accountId, current, deploy, forkedRepo, send }) => (
                 </a>
               </p>
             </div>
-          ) : (
-            <div className="mt-4 text-sm">
-              <p>GitHub Actions enabled on this repository.</p>
-            </div>
-          )}
+          ) : null}
           <div class="mt-6">
             <span class="block w-full rounded-md shadow-sm">
               <button
@@ -90,6 +87,7 @@ export default ({ accountId, current, deploy, forkedRepo, send }) => (
       )}
       {current.matches("completed") && (
         <div className="mt-4">
+          <WorkflowStatus repo={forkedRepo} />
           <p>
             You can go to the Workers dashboard to see information about your
             deployed application, or go to the GitHub repository to learn more

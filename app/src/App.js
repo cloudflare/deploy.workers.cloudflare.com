@@ -127,9 +127,9 @@ const App = () => {
   // start github action
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center align-content">
-      <div className="h-screen w-full md:w-2/3 mx-auto md:py-12 md:px-4 md:px-6 lg:px-8">
-        <div className="h-full bg-white overflow-hidden shadow md:rounded-lg flex flex-col">
+    <div className="bg-gray-100 min-h-screen flex align-content">
+      <div className="w-full md:w-2/3 mx-auto md:py-12 md:px-4 md:px-6 lg:px-8">
+        <div className="h-full bg-white shadow md:rounded-lg flex flex-col">
           <div className="border-b border-gray-200 px-4 py-5 sm:px-6 flex items-center">
             <h1
               className="text-2xl font-bold leading-7 sm:text-3xl sm:leading-9 sm:truncate flex-1"
