@@ -39,10 +39,7 @@ export const workflowMachine = Machine({
 
 const TICK = 5000;
 
-const getWorkflowId = async (repo, { iterations = 0, send, setWorkflowId }) => {
-  const maxIterations = 10;
-  if (iterations > maxIterations) send("ERROR");
-
+const getWorkflowId = async (repo, { send, setWorkflowId }) => {
   const baseUrl = `https://api.github.com`;
   const baseRepoUrl = `${baseUrl}/repos/${repo}`;
   const workflowsUrl = `${baseRepoUrl}/actions/workflows`;
@@ -54,7 +51,6 @@ const getWorkflowId = async (repo, { iterations = 0, send, setWorkflowId }) => {
     setTimeout(
       () =>
         getWorkflowId(repo, {
-          iterations: iterations + 1,
           send,
           setWorkflowId,
         }),
@@ -63,13 +59,7 @@ const getWorkflowId = async (repo, { iterations = 0, send, setWorkflowId }) => {
   }
 };
 
-const getRunStatus = async (
-  { repo, runId },
-  { iterations = 0, send, setRunStatus }
-) => {
-  const maxIterations = 10;
-  if (iterations > maxIterations) send("ERROR");
-
+const getRunStatus = async ({ repo, runId }, { send, setRunStatus }) => {
   const baseUrl = `https://api.github.com`;
   const baseRepoUrl = `${baseUrl}/repos/${repo}`;
   const runUrl = `${baseRepoUrl}/actions/runs/${runId}`;
@@ -112,7 +102,6 @@ const getRunStatus = async (
         getRunStatus(
           { repo, runId },
           {
-            iterations: iterations + 1,
             send,
             setRunStatus,
           }
@@ -122,13 +111,7 @@ const getRunStatus = async (
   }
 };
 
-const getRun = async (
-  { repo, workflowId },
-  { iterations = 0, send, setRunId }
-) => {
-  const maxIterations = 10;
-  if (iterations > maxIterations) send("ERROR");
-
+const getRun = async ({ repo, workflowId }, { send, setRunId }) => {
   const baseUrl = `https://api.github.com`;
   const baseRepoUrl = `${baseUrl}/repos/${repo}`;
   const runsUrl = `${baseRepoUrl}/actions/workflows/${workflowId}/runs`;
@@ -143,7 +126,6 @@ const getRun = async (
     setTimeout(
       () =>
         getRun(repo, {
-          iterations: iterations + 1,
           send,
           setRunId,
         }),
@@ -157,7 +139,7 @@ const WorkflowStatus = ({ repo }) => {
   const [runId, setRunId] = useState(null);
   const [runStatus, setRunStatus] = useState(null);
 
-  const [current, send] = useMachine(workflowMachine, {
+  const [_, send] = useMachine(workflowMachine, {
     context: { repo },
     actions: {
       setup: () => {
@@ -185,10 +167,8 @@ const WorkflowStatus = ({ repo }) => {
   let baseColor;
   switch (runStatus) {
     case "Successful":
-      baseColor = "green";
-      break;
     case "Running":
-      baseColor = "yellow";
+      baseColor = "green";
       break;
     case "Failed":
       baseColor = "red";
