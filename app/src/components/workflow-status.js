@@ -30,7 +30,9 @@ export const workflowMachine = Machine({
       },
     },
     failed: {},
-    error: {},
+    error: {
+      entry: ["error"],
+    },
     completed: {
       type: "final",
     },
@@ -40,97 +42,112 @@ export const workflowMachine = Machine({
 const TICK = 5000;
 
 const getWorkflowId = async (repo, { send, setWorkflowId }) => {
-  const baseUrl = `https://api.github.com`;
-  const baseRepoUrl = `${baseUrl}/repos/${repo}`;
-  const workflowsUrl = `${baseRepoUrl}/actions/workflows`;
-  const { workflows } = await (await fetch(workflowsUrl)).json();
-  if (workflows.length) {
-    const { id: workflowId } = workflows[0];
-    setWorkflowId(workflowId);
-  } else {
-    setTimeout(
-      () =>
-        getWorkflowId(repo, {
-          send,
-          setWorkflowId,
-        }),
-      TICK
-    );
+  try {
+    const baseUrl = `https://api.github.com`;
+    const baseRepoUrl = `${baseUrl}/repos/${repo}`;
+    const workflowsUrl = `${baseRepoUrl}/actions/workflows`;
+    const { workflows } = await (await fetch(workflowsUrl)).json();
+    if (workflows.length) {
+      const { id: workflowId } = workflows[0];
+      setWorkflowId(workflowId);
+    } else {
+      setTimeout(
+        () =>
+          getWorkflowId(repo, {
+            send,
+            setWorkflowId,
+          }),
+        TICK
+      );
+    }
+  } catch (err) {
+    console.error(err);
+    send("ERROR");
   }
 };
 
 const getRunStatus = async ({ repo, runId }, { send, setRunStatus }) => {
-  const baseUrl = `https://api.github.com`;
-  const baseRepoUrl = `${baseUrl}/repos/${repo}`;
-  const runUrl = `${baseRepoUrl}/actions/runs/${runId}`;
-  const { status, conclusion } = await (await fetch(runUrl)).json();
+  try {
+    const baseUrl = `https://api.github.com`;
+    const baseRepoUrl = `${baseUrl}/repos/${repo}`;
+    const runUrl = `${baseRepoUrl}/actions/runs/${runId}`;
+    const { status, conclusion } = await (await fetch(runUrl)).json();
 
-  let m_status, u_status;
-  switch (conclusion) {
-    case "failure":
-      m_status = "FAILED";
-      u_status = "Failed";
-      break;
-    case "success":
-      m_status = "COMPLETED";
-      u_status = "Successful";
-      break;
-    case null:
-      break;
-    default:
-      m_status = "ERROR";
-      break;
-  }
+    let m_status, u_status;
+    switch (conclusion) {
+      case "failure":
+        m_status = "FAILED";
+        u_status = "Failed";
+        break;
+      case "success":
+        m_status = "COMPLETED";
+        u_status = "Successful";
+        break;
+      case null:
+        break;
+      default:
+        m_status = "ERROR";
+        break;
+    }
 
-  switch (status) {
-    case "queued":
-      u_status = "Queued";
-      break;
-    case "completed":
-      break;
-    case "in_progress":
-      u_status = "Running";
-      break;
-  }
+    switch (status) {
+      case "queued":
+        u_status = "Queued";
+        break;
+      case "completed":
+        break;
+      case "in_progress":
+        u_status = "Running";
+        break;
+    }
 
-  setRunStatus(u_status);
-  if (m_status) send(m_status);
+    setRunStatus(u_status);
+    if (m_status) send(m_status);
 
-  if (!conclusion) {
-    setTimeout(
-      () =>
-        getRunStatus(
-          { repo, runId },
-          {
-            send,
-            setRunStatus,
-          }
-        ),
-      TICK
-    );
+    if (!conclusion) {
+      setTimeout(
+        () =>
+          getRunStatus(
+            { repo, runId },
+            {
+              send,
+              setRunStatus,
+            }
+          ),
+        TICK
+      );
+    }
+  } catch (err) {
+    console.error(err);
+    send("ERROR");
   }
 };
 
 const getRun = async ({ repo, workflowId }, { send, setRunId }) => {
-  const baseUrl = `https://api.github.com`;
-  const baseRepoUrl = `${baseUrl}/repos/${repo}`;
-  const runsUrl = `${baseRepoUrl}/actions/workflows/${workflowId}/runs`;
-  const { workflow_runs } = await (await fetch(runsUrl)).json();
-  if (workflow_runs.length) {
-    const sortedRuns = workflow_runs.sort(
-      ({ created_at: a }, { created_at: b }) => a < b
-    );
-    const { id } = sortedRuns[0];
-    setRunId(id);
-  } else {
-    setTimeout(
-      () =>
-        getRun(repo, {
-          send,
-          setRunId,
-        }),
-      TICK
-    );
+  try {
+    const baseUrl = `https://api.github.com`;
+    const baseRepoUrl = `${baseUrl}/repos/${repo}`;
+    const runsUrl = `${baseRepoUrl}/actions/workflows/${workflowId}/runs`;
+    const { workflow_runs } = await (await fetch(runsUrl)).json();
+    if (workflow_runs.length) {
+      const sortedRuns = workflow_runs.sort(
+        ({ created_at: a }, { created_at: b }) => a < b
+      );
+      const { id } = sortedRuns[0];
+      setRunId(id);
+    } else {
+      setTimeout(
+        () =>
+          getRun(repo, {
+            send,
+            setRunId,
+          }),
+        TICK
+      );
+    }
+  } catch (err) {
+    console.error(err);
+    send("ERROR");
   }
 };
 
@@ -153,8 +170,8 @@ const WorkflowStatus = ({ repo }) => {
       poll_run_status: () => {
         getRunStatus({ repo, runId }, { send, setRunStatus });
       },
-      completed: () => {
-        console.log(runId);
+      error: () => {
+        setRunStatus("Error");
       },
     },
   });
@@ -170,6 +187,7 @@ const WorkflowStatus = ({ repo }) => {
     case "Running":
       baseColor = "green";
       break;
+    case "Error":
     case "Failed":
       baseColor = "red";
       break;
