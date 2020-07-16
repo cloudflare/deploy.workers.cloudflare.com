@@ -89,7 +89,8 @@ const handleSecret = async (event) => {
 const validateCookie = async (event) => {
   try {
     const { request } = event;
-    const cookieHeader = request.headers.get("Cookie");
+    const cookieHeader =
+      request.headers.get("Cookie") || request.headers.get("Set-cookie");
     const cookies = cookie.parse(cookieHeader);
     const auth = cookies[cookieKey];
 
