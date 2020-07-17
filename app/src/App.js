@@ -40,6 +40,7 @@ export const appMachine = Machine({
 
 const App = () => {
   const [current, send] = useMachine(appMachine);
+  const [accountId, setAccountId] = useState(null);
   const [url, setUrl] = useState(null);
   const [forkedRepo, setForkedRepo] = useState(null);
   const [edgeState] = useContext(EdgeStateContext);
@@ -88,6 +89,8 @@ const App = () => {
         "User-Agent": "Deploy-to-CF-Workers",
       },
     });
+
+    setAccountId(accountId);
 
     await fetch(`/secret`, {
       body: JSON.stringify({
@@ -151,6 +154,7 @@ const App = () => {
               <GithubAuth current={current} />
               <Fork current={current} submit={fork} />
               <Deploy
+                accountId={accountId}
                 current={current}
                 deploy={dispatchEvent}
                 forkedRepo={forkedRepo}
