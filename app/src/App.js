@@ -312,6 +312,7 @@ const App = () => {
                 apiTokenState={[apiToken, setApiToken]}
                 complete={() => send("SUBMIT")}
                 current={current}
+                isPaid={isPaid}
               />
               <Deploy
                 accountId={accountId}
