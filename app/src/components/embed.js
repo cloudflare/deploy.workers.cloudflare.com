@@ -31,7 +31,11 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
     <div class="h-24 max-w-2xl w-full border border-gray-7 overflow-hidden overflow-hidden rounded-lg">
       <a href={linkUrl || url} title={embed.title}>
         <div className="flex h-full">
-          <img className="object-cover w-32" src={embed.image} />
+          <img
+            alt={embed.title}
+            className="object-cover w-32"
+            src={embed.image}
+          />
           <div class="px-4 py-2 flex flex-col justify-content">
             <p className="text-gray-800 flex-1">{embed.title}</p>
             <p className="text-sm leading-5 text-gray-500">
@@ -47,7 +51,7 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
   ) : quiet ? null : (
     <div class="text-md leading-5 text-gray-800 pt-6">
       <p>
-        <a href={url} target="_blank">
+        <a href={url} rel="noopener noreferrer" target="_blank">
           {url}
         </a>
       </p>

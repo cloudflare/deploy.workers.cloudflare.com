@@ -114,6 +114,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                     <a
                       className="text-blue-4 text-sm font-semibold flex items-center"
                       href={`https://github.com/${forkedRepo}/actions`}
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
                       <span className="mr-2">Repository - Actions</span>
@@ -142,6 +143,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                     <a
                       className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-800 hover:bg-indigo-700 focus:outline-none focus:border-gray-900 focus:shadow-outline-indigo active:bg-gray-900 transition ease-in-out duration-150"
                       href={`https://dash.cloudflare.com/${accountId}/workers/overview`}
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
                       <svg
@@ -161,6 +163,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                     <a
                       className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-800 hover:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:shadow-outline-indigo active:bg-indigo-900 transition ease-in-out duration-150"
                       href={`https://github.com/${forkedRepo}`}
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
                       <svg

@@ -112,6 +112,7 @@ const Info = () => {
             <a
               className="font-semibold text-blue-4"
               href="https://workers.cloudflare.com"
+              rel="noopener noreferrer"
               target="_blank"
             >
               Learn more about Cloudflare Workers
@@ -154,7 +155,7 @@ const App = () => {
     } else {
       send("NO_AUTH");
     }
-  }, []);
+  }, [send, edgeState]);
 
   const fork = async ({ accountId, apiToken, event }) => {
     const regex = /github.com\/(?<owner>\w*)\/(?<repo>.*)/;
@@ -241,7 +242,10 @@ const App = () => {
             </h1>
             {debug && (
               <p className="p-1 text-right bg-gray-200 font-mono">
-                🔧 {current.value}
+                <span role="img" aria-label="Wrench">
+                  🔧
+                </span>{" "}
+                {current.value}
               </p>
             )}
           </div>
@@ -273,6 +277,7 @@ const App = () => {
           <a
             className="font-semibold text-blue-4 mt-2 text-sm"
             href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Feedback survey

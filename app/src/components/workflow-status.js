@@ -99,6 +99,8 @@ const getRunStatus = async ({ repo, runId }, { send, setRunStatus }) => {
       case "in_progress":
         u_status = "Running";
         break;
+      default:
+        break;
     }
 
     setRunStatus(u_status);
@@ -156,7 +158,7 @@ const WorkflowStatus = ({ repo }) => {
   const [runId, setRunId] = useState(null);
   const [runStatus, setRunStatus] = useState(null);
 
-  const [_, send] = useMachine(workflowMachine, {
+  const [, send] = useMachine(workflowMachine, {
     context: { repo },
     actions: {
       setup: () => {
@@ -179,7 +181,7 @@ const WorkflowStatus = ({ repo }) => {
   useEffect(() => {
     if (workflowId) send("LOADED");
     if (runId) send("POLL");
-  }, [workflowId, runId]);
+  }, [workflowId, runId, send]);
 
   let baseColor;
   switch (runStatus) {
