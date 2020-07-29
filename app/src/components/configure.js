@@ -45,10 +45,11 @@ const machine = Machine({
 });
 
 export default ({
-  complete,
-  current,
   accountIdState: [accountId, setAccountId],
   apiTokenState: [apiToken, setApiToken],
+  complete,
+  current,
+  isPaid,
 }) => {
   const [subcurrent, send] = useMachine(machine);
 
@@ -91,30 +92,66 @@ export default ({
       active={
         <>
           <Subsection
-            title="Use an existing Cloudflare account or create a new one"
+            title={
+              isPaid
+                ? "Use an existing Cloudflare account with the Workers Bundled plan or create a new one"
+                : "Use an existing Cloudflare account or create a new one"
+            }
             active={subcurrent.value === "initial"}
           >
             <div>
               <p className="mb-4">
-                Note: After you create an account, return here and continue with
-                "I have an account" button.
+                {isPaid
+                  ? `Note: After you create or upgrade an account, return here to continue`
+                  : `Note: After you create an account, return here and continue with "I have an account" button.`}
               </p>
               <div className="flex space-x-4">
-                <button
-                  className="bg-blue-4 py-2 px-4 rounded-md text-white"
-                  onClick={() => send("HAS_ACCOUNT")}
-                >
-                  I have an account
-                </button>
-                <a
-                  className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                  href="https://www.cloudflare.com"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span className="mr-2">Create account</span>
-                  <ExternalLink />
-                </a>
+                {isPaid ? (
+                  <>
+                    <button
+                      className="bg-blue-4 py-2 px-4 rounded-md text-white"
+                      onClick={() => send("HAS_ACCOUNT")}
+                    >
+                      I have a Bundled account
+                    </button>
+                    <a
+                      className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
+                      href="https://www.cloudflare.com"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <span className="mr-2">Upgrade plan</span>
+                      <ExternalLink />
+                    </a>
+                    <a
+                      className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
+                      href="https://www.cloudflare.com"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <span className="mr-2">Create account</span>
+                      <ExternalLink />
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="bg-blue-4 py-2 px-4 rounded-md text-white"
+                      onClick={() => send("HAS_ACCOUNT")}
+                    >
+                      I have an account
+                    </button>
+                    <a
+                      className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
+                      href="https://www.cloudflare.com"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <span className="mr-2">Create account</span>
+                      <ExternalLink />
+                    </a>
+                  </>
+                )}
               </div>
             </div>
           </Subsection>
