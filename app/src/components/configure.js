@@ -66,7 +66,7 @@ export default ({
         }),
       });
 
-      if (resp.status != 200) {
+      if (resp.status !== 200) {
         throw new Error(await resp.text());
       }
 
@@ -109,6 +109,7 @@ export default ({
                 <a
                   className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
                   href="https://www.cloudflare.com"
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
                   <span className="mr-2">Create account</span>
@@ -154,6 +155,7 @@ export default ({
                     <a
                       className="text-blue-4 text-sm font-semibold flex items-center"
                       href="https://dash.cloudflare.com"
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
                       <span className="mr-2">Workers Dashboard</span>
@@ -187,6 +189,7 @@ export default ({
                     <a
                       className="text-blue-4 text-sm font-semibold flex items-center"
                       href="https://dash.cloudflare.com/profile"
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
                       <span className="mr-2">My Profile</span>

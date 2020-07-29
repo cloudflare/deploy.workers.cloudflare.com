@@ -23,6 +23,7 @@ export default ({ accountId, forkedRepo, url }) => (
         </div>
         <div className="flex-1 px-6 py-4">
           <img
+            alt="Completed"
             className="bg-gray-200 object-cover w-full h-64 mb-4"
             lazy="loading"
             src="https://images.unsplash.com/photo-1533243216203-8c08406d4583?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80"
@@ -49,6 +50,7 @@ export default ({ accountId, forkedRepo, url }) => (
               <a
                 className="self-center bg-blue-4 py-2 px-4 rounded-md text-white flex items-center"
                 href={forkedRepo}
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 <span className="mr-2">GitHub repository</span>
@@ -66,6 +68,7 @@ export default ({ accountId, forkedRepo, url }) => (
               <a
                 className="self-center text-blue-600 border border-blue-600 px-4 py-2 rounded-md flex items-center"
                 href={`https://dash.cloudflare.com/${accountId}/workers`}
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 <span className="mr-2">Worker dashboard</span>
@@ -83,6 +86,7 @@ export default ({ accountId, forkedRepo, url }) => (
               <a
                 className="self-center text-blue-600 border border-blue-600 px-4 py-2 rounded-md flex items-center"
                 href={`https://developers.cloudflare.com/workers/quickstart`}
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 <span className="mr-2">Quick start</span>
@@ -98,6 +102,7 @@ export default ({ accountId, forkedRepo, url }) => (
         <a
           className="font-semibold underline"
           href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
+          rel="noopener noreferrer"
           target="_blank"
         >
           short feedback survey
