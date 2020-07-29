@@ -4,7 +4,7 @@ account_id = "dc56444c4c955a1653106ccf997c1067"
 workers_dev = true
 
 kv-namespaces = [
-  { binding = "AUTH_STORE", id = "8f005ce95ab94b98936b96d8bc46693b" }
+  { binding = "AUTH_STORE", id = "8f005ce95ab94b98936b96d8bc46693b", preview_id = "8f005ce95ab94b98936b96d8bc46693b" }
 ]
 
 [vars]

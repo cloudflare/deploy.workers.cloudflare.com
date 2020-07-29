@@ -34,6 +34,10 @@ async function handleEvent(event) {
     return handleSecret(event);
   }
 
+  if (url.pathname === "/verify") {
+    return handleVerifyCf(event);
+  }
+
   const { accessToken, authed, error, redirectUrl } = await validateCookie(
     event
   );
@@ -176,6 +180,20 @@ const handleCallback = async (event) => {
     headers,
     status: 301,
   });
+};
+
+const handleVerifyCf = async (event) => {
+  const { accountId, apiToken } = await event.request.json();
+  const resp = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${accountId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        "Content-type": "application/json",
+      },
+    }
+  );
+  return new Response(null, { status: resp.status });
 };
 
 const renderApp = async (event, { error = null, state = {} }) => {

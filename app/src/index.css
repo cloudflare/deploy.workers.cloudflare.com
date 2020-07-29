@@ -1,13 +1,113 @@
+:root {
+  --blue-1: #163d57;
+  --blue-3: #276d9b;
+  --blue-4: #2c7cb0;
+  --blue-6: #add2eb;
+  --blue-7: #ebf4fa;
+  --orange-5: #e06d10;
+  --orange-9: #fdf1e7;
+  --gray-1: #36393a;
+  --gray-3: #62676a;
+  --gray-7: #d5d7d8;
+  --red-5: #fcf0f2;
+  --red-3: #f3bac3;
+  --red-1: #a01c32;
+}
+
+.bg-blue-4 {
+  background-color: var(--blue-4);
+}
+.bg-blue-7 {
+  background-color: var(--blue-7);
+}
+.bg-orange-9 {
+  background-color: var(--orange-9);
+}
+.bg-red-5 {
+  background-color: var(--red-5);
+}
+
+.border-blue-4 {
+  border-color: var(--blue-4);
+}
+.border-blue-6 {
+  border-color: var(--blue-6);
+}
+.border-orange-5 {
+  border-color: var(--orange-5);
+}
+.border-red-3 {
+  border-color: var(--red-3);
+}
+.border-gray-7 {
+  border-color: var(--gray-7);
+}
+
+.text-blue-1 {
+  color: var(--blue-1);
+}
+.text-blue-4 {
+  color: var(--blue-4);
+}
+.text-gray-1 {
+  color: var(--gray-1);
+}
+.text-gray-3 {
+  color: var(--gray-3);
+}
+.text-gray-7 {
+  color: var(--gray-7);
+}
+.text-red-1 {
+  color: var(--red-1);
+}
+
+.text-header {
+  font-size: 32px;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.rotate {
+  transform: rotate(180deg);
+  writing-mode: vertical-lr;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 10%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.fade {
+  animation: fade 1s linear infinite alternate;
 }

@@ -1,46 +1,139 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Machine } from "xstate";
+import { Machine, assign } from "xstate";
 import { useMachine } from "@xstate/react";
 
 import "./tailwind.css";
 import "./main.css";
 
 import { EdgeStateContext } from "./edge_state";
-import { Deploy, Embed, Fork, GithubAuth, Templates } from "./components";
+import {
+  Completed,
+  Deploy,
+  ChevronLeft,
+  ChevronRight,
+  Configure,
+  Embed,
+  GithubAuth,
+  Logo,
+  MissingUrl,
+} from "./components";
 
-export const appMachine = Machine({
-  id: "app",
-  initial: "initial",
-  states: {
-    initial: {
-      on: {
-        NO_AUTH: "login",
-        AUTH: "templates",
-        URL: "configuring",
+export const appMachine = Machine(
+  {
+    id: "app",
+    initial: "initial",
+    context: { stepNumber: 1 },
+    states: {
+      initial: {
+        on: {
+          LOGIN: {
+            target: "login",
+          },
+          NO_URL: "missing_url",
+          URL: {
+            target: "configuring",
+            actions: "incrementStep",
+          },
+        },
       },
+      missing_url: {
+        on: {
+          URL: {
+            target: "configuring",
+            actions: "incrementStep",
+          },
+        },
+      },
+      login: {
+        on: {
+          AUTH: {
+            target: "configuring",
+            actions: "incrementStep",
+          },
+        },
+      },
+      configuring: {
+        on: {
+          SUBMIT: {
+            target: "deploying_setup",
+            actions: "incrementStep",
+          },
+        },
+      },
+      deploying_setup: {
+        on: { ERROR: "error_forking", COMPLETE: "completed" },
+      },
+      completed: {
+        type: "final",
+      },
+      error_forking: {},
+      error_starting_deploy: {},
     },
-    login: {},
-    templates: {},
-    configuring: {
-      on: { SUBMIT: "deploying_setup" },
-    },
-    deploying_setup: {
-      on: { ERROR: "error_forking", SETUP: "deploying" },
-    },
-    deploying: {
-      on: { ERROR: "error_forking", COMPLETE: "completed" },
-    },
-    completed: {
-      type: "final",
-    },
-    error_forking: {},
-    error_starting_deploy: {},
   },
-});
+  {
+    actions: {
+      incrementStep: assign({
+        stepNumber: (context) => context.stepNumber + 1,
+      }),
+    },
+  }
+);
+
+const Info = () => {
+  const [expanded, setExpanded] = useState(false);
+  const classes =
+    "-ml-2 flex-1 w-full bg-orange-9 border-4 border-orange-5 rounded-md flex z-0 text-gray-1 ";
+  return (
+    <div className={[classes, expanded ? "p-6" : "p-2"].join("")}>
+      {expanded ? (
+        <div>
+          <div className="float-right" onClick={() => setExpanded(false)}>
+            <ChevronLeft />
+          </div>
+
+          <h2 className="mb-4 font-semibold text-2xl">Why Workers?</h2>
+
+          <h3 className="mb-2 font-semibold text-lg">Distributed network</h3>
+          <p>
+            Deploy serverless code to Cloudflare’s edge network across 200
+            cities and 95 countries.
+          </p>
+
+          <h3 className="mt-6 font-semibold mb-2 text-lg">Fast start</h3>
+          <p>Cold start under 5ms. 50 times faster than other platforms.</p>
+
+          <h3 className="mt-6 font-semibold mb-2 text-lg">Free Tier</h3>
+          <p>
+            First 100,000 requests each day are free and paid plans start at
+            just $5 per 10 million requests.
+          </p>
+
+          <div className="mt-6">
+            <a
+              className="font-semibold text-blue-4"
+              href="https://workers.cloudflare.com"
+              target="_blank"
+            >
+              Learn more about Cloudflare Workers
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div className="py-4 text-gray-3">
+          <div onClick={() => setExpanded(true)}>
+            <ChevronRight />
+          </div>
+          <span className="mt-4 rotate">Why Workers</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const App = () => {
   const [current, send] = useMachine(appMachine);
   const [accountId, setAccountId] = useState(null);
+  const [apiToken, setApiToken] = useState(null);
   const [url, setUrl] = useState(null);
   const [forkedRepo, setForkedRepo] = useState(null);
   const [edgeState] = useContext(EdgeStateContext);
@@ -49,10 +142,15 @@ const App = () => {
   useEffect(() => {
     const windowUrl = new URL(window.location);
     const url = windowUrl.searchParams.get("url");
-    if (url) setUrl(url);
+    if (url) {
+      setUrl(url);
+    } else {
+      send("NO_URL");
+    }
+    send("LOGIN");
 
     if (edgeState && edgeState.accessToken) {
-      send(url ? "URL" : "AUTH");
+      send("AUTH");
     } else {
       send("NO_AUTH");
     }
@@ -124,22 +222,22 @@ const App = () => {
         "User-Agent": "Deploy-to-CF-Workers",
       },
     });
+    localStorage.removeItem("url");
     send("COMPLETE");
   };
 
   // set secret
   // start github action
 
-  return (
-    <div className="bg-gray-100 min-h-screen flex align-content">
-      <div className="w-full md:w-2/3 mx-auto md:py-12 md:px-4 md:px-6 lg:px-8">
-        <div className="h-full bg-white shadow md:rounded-lg flex flex-col">
-          <div className="border-b border-gray-200 px-4 py-5 sm:px-6 flex items-center">
-            <h1
-              className="text-2xl font-bold leading-7 sm:text-3xl sm:leading-9 sm:truncate flex-1"
-              onClick={() => setDebug(!debug)}
-            >
-              Deploy to Cloudflare Workers{" "}
+  const in_progress = (
+    <div className="flex flex-col items-center min-h-screen">
+      <Logo />
+      <div className="flex">
+        <div className="flex-1" />
+        <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded border flex flex-col pt-6 pb-10 px-10">
+          <div className="flex items-center">
+            <h1 className="text-header flex-1" onClick={() => setDebug(!debug)}>
+              Deploy to Workers{" "}
             </h1>
             {debug && (
               <p className="p-1 text-right bg-gray-200 font-mono">
@@ -147,39 +245,53 @@ const App = () => {
               </p>
             )}
           </div>
-          {url ? (
-            <div className="border-b border-gray-200 px-4 py-5 sm:p-6">
-              <Embed url={url} />
-            </div>
-          ) : null}
-          <div className="flex-1 px-4 py-5 sm:p-6">
+          <div className="pt-6 pb-10">{url ? <Embed url={url} /> : null}</div>
+          <div className="flex-1 max-w-2xl">
             <>
-              <Templates current={current} />
               <GithubAuth current={current} />
-              <Fork current={current} submit={fork} />
+              <Configure
+                accountIdState={[accountId, setAccountId]}
+                apiTokenState={[apiToken, setApiToken]}
+                complete={() => send("SUBMIT")}
+                current={current}
+              />
               <Deploy
                 accountId={accountId}
                 current={current}
                 deploy={dispatchEvent}
+                fork={(event) => fork({ accountId, apiToken, event })}
                 forkedRepo={forkedRepo}
                 send={send}
               />
             </>
           </div>
-          <div className="border-t border-gray-200 px-4 py-4 sm:px-6">
-            <p class="text-center text-base leading-6 text-gray-400">
-              <a
-                className="text-indigo-600 hover:text-indigo-500"
-                href="https://github.com/signalnerve/deploy-to-cf-workers/blob/master/DEVELOPERS.md"
-              >
-                Developer Guide
-              </a>
-            </p>
-          </div>
+        </div>
+        <Info />
+      </div>
+      <div className="min-w-3xl max-w-3xl w-full">
+        <div className="px-10 flex-1 mt-2 text-right">
+          <a
+            className="font-semibold text-blue-4 mt-2 text-sm"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
+            target="_blank"
+          >
+            Feedback survey
+          </a>
         </div>
       </div>
     </div>
   );
+
+  switch (current.value) {
+    case "missing_url":
+      return <MissingUrl />;
+    case "completed":
+      return (
+        <Completed accountId={accountId} forkedRepo={forkedRepo} url={url} />
+      );
+    default:
+      return in_progress;
+  }
 };
 
 export default App;
