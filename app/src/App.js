@@ -34,6 +34,10 @@ export const appMachine = Machine(
             target: "configuring",
             actions: "incrementStep",
           },
+          LS_FORKED: {
+            target: "deploying_setup",
+            actions: ["incrementStep", "incrementStep"],
+          },
         },
       },
       missing_url: {
@@ -140,15 +144,43 @@ const App = () => {
   const [edgeState] = useContext(EdgeStateContext);
   const [debug, setDebug] = useState(false);
 
+  const setAccountIdWithCache = (accountId) => {
+    setAccountId(accountId);
+    localStorage.setItem("accountId", accountId);
+  };
+
+  const setForkedRepoWithCache = (forkedRepo) => {
+    setForkedRepo(forkedRepo);
+    localStorage.setItem("forkedRepo", forkedRepo);
+  };
+
   useEffect(() => {
     const windowUrl = new URL(window.location);
     const url = windowUrl.searchParams.get("url");
+    const lsUrl = localStorage.getItem("url");
     if (url) {
       setUrl(url);
+
+      // New URL found that doesn't match LS,
+      // need to clear all cache and start over
+      if (lsUrl !== url) {
+        localStorage.clear();
+        localStorage.setItem("url", url);
+      }
     } else {
-      send("NO_URL");
+      lsUrl ? setUrl(lsUrl) : send("NO_URL");
     }
+
+    const lsForkedRepo = localStorage.getItem("forkedRepo");
+    if (lsForkedRepo) {
+      setForkedRepo(lsForkedRepo);
+      send("LS_FORKED");
+    }
+
     send("LOGIN");
+
+    const lsAccountId = localStorage.getItem("accountId");
+    if (lsAccountId) setAccountId(lsAccountId);
 
     if (edgeState && edgeState.accessToken) {
       send("AUTH");
@@ -178,7 +210,7 @@ const App = () => {
       }
     );
     const repo = await resp.json();
-    setForkedRepo(repo.full_name);
+    setForkedRepoWithCache(repo.full_name);
 
     await fetch(`/secret`, {
       body: JSON.stringify({
@@ -193,7 +225,7 @@ const App = () => {
       },
     });
 
-    setAccountId(accountId);
+    setAccountIdWithCache(accountId);
 
     await fetch(`/secret`, {
       body: JSON.stringify({
@@ -223,12 +255,9 @@ const App = () => {
         "User-Agent": "Deploy-to-CF-Workers",
       },
     });
-    localStorage.removeItem("url");
+    localStorage.setItem("deployed", true);
     send("COMPLETE");
   };
-
-  // set secret
-  // start github action
 
   const in_progress = (
     <div className="flex flex-col items-center min-h-screen">
@@ -254,7 +283,7 @@ const App = () => {
             <>
               <GithubAuth current={current} />
               <Configure
-                accountIdState={[accountId, setAccountId]}
+                accountIdState={[accountId, setAccountIdWithCache]}
                 apiTokenState={[apiToken, setApiToken]}
                 complete={() => send("SUBMIT")}
                 current={current}

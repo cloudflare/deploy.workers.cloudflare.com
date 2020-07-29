@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Machine } from "xstate";
 import { useMachine } from "@xstate/react";
 
@@ -61,6 +61,19 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
     send("COMPLETE");
     event.preventDefault();
   };
+
+  const enable = () => {
+    subsend("ENABLE_ACTIONS");
+    localStorage.setItem("actionsEnabled", true);
+  };
+
+  useEffect(() => {
+    if (forkedRepo) subsend("FORK");
+    const enabled = localStorage.getItem("actionsEnabled");
+    if (enabled) subsend("ENABLE_ACTIONS");
+    const deployed = localStorage.getItem("deployed");
+    if (deployed) send("COMPLETE");
+  });
 
   return (
     <Section
@@ -126,7 +139,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                   </div>
                   <button
                     className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-4 hover:bg-blue-4 focus:outline-none focus:border-blue-4 focus:shadow-outline-indigo active:bg-blue-4 transition duration-150 ease-in-out"
-                    onClick={() => subsend("ENABLE_ACTIONS")}
+                    onClick={enable}
                   >
                     Workflows are enabled
                   </button>
