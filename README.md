@@ -1,6 +1,8 @@
 # Deploy to Cloudflare Workers
 
-A GitHub OAuth integration for deploying projects to Cloudflare Workers using GitHub Actions. 
+A GitHub OAuth integration for deploying projects to Cloudflare Workers using GitHub Actions.
+
+![Demo](./.github/demo.png)
 
 ## Using this project
 
