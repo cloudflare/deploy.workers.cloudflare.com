@@ -14,6 +14,6 @@ jobs:
         with:
           node-version: "12.x"
       - run: cd app && yarn install && cd ..
-      - run: yarn run build
+      - run: yarn workspace app build
         env:
           CI: true
