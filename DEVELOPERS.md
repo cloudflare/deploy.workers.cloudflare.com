@@ -23,7 +23,6 @@ deploy:
 2. Add support for `CF_API_TOKEN` and `CF_ACCOUNT_ID` in your workflow:
 
 ```yaml
-
 # Update "Publish" step from last code snippet
 - name: Publish
   uses: cloudflare/wrangler-action@1.2.0
@@ -33,7 +32,6 @@ deploy:
     CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 ```
 
-
 3. Add the Markdown code for your button to your project's README, replacing the example `url` parameter with your repository URL.
 
 ```md
@@ -41,3 +39,11 @@ deploy:
 ```
 
 ![Deploy to Cloudflare Workers](https://deploy-to-cf-workers.signalnerve.workers.dev/button)
+
+**Does your project use Workers KV or other features only available in the Workers unlimited plan?** Providing the `paid=true` query parameter to the `/button` and the deploy application paths will render a "Deploy to Workers Unlimited" button, as seen below -- it will also render a notice in the UI that the project requires Workers Unlimited:
+
+```md
+[![Deploy to Cloudflare Workers](https://deploy-to-cf-workers.signalnerve.workers.dev/button?paid=true)](https://deploy-to-cf-workers.signalnerve.workers.dev/?url=https://github.com/YOURUSERNAME/YOURREPO&paid=true)
+```
+
+[![Deploy to Cloudflare Workers](https://deploy-to-cf-workers.signalnerve.workers.dev/button?paid=true)](https://deploy-to-cf-workers.signalnerve.workers.dev/?url=https://github.com/YOURUSERNAME/YOURREPO&paid=true)
