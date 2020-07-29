@@ -14,6 +14,7 @@ import {
   Configure,
   Embed,
   GithubAuth,
+  Info as InfoIcon,
   Logo,
   MissingUrl,
 } from "./components";
@@ -139,6 +140,7 @@ const App = () => {
   const [current, send] = useMachine(appMachine);
   const [accountId, setAccountId] = useState(null);
   const [apiToken, setApiToken] = useState(null);
+  const [isPaid, setIsPaid] = useState(null);
   const [url, setUrl] = useState(null);
   const [forkedRepo, setForkedRepo] = useState(null);
   const [edgeState] = useContext(EdgeStateContext);
@@ -156,6 +158,12 @@ const App = () => {
 
   useEffect(() => {
     const windowUrl = new URL(window.location);
+    const isPaidParam = windowUrl.searchParams.get("paid");
+    const lsIsPaid = localStorage.getItem("isPaid");
+    if ((lsIsPaid || isPaidParam) === "true") {
+      setIsPaid(true);
+      localStorage.setItem("isPaid", true);
+    }
     const url = windowUrl.searchParams.get("url");
     const lsUrl = localStorage.getItem("url");
     if (url) {
@@ -278,8 +286,25 @@ const App = () => {
               </p>
             )}
           </div>
-          <div className="pt-6 pb-10">{url ? <Embed url={url} /> : null}</div>
-          <div className="flex-1 max-w-2xl">
+          <div className="py-4">{url ? <Embed url={url} /> : null}</div>
+          {isPaid ? (
+            <div className="text-gray-1 mx-2 mb-4 flex items-center">
+              <InfoIcon className="w-4 h-4" />
+              <div className="ml-2">
+                This project requires Workers KV, available only in the{" "}
+                <a
+                  className="font-semibold text-blue-4"
+                  href="https://workers.cloudflare.com/#plans"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Workers Bundled Plan
+                </a>
+                .
+              </div>
+            </div>
+          ) : null}
+          <div className="pt-4 flex-1 max-w-2xl">
             <>
               <GithubAuth current={current} />
               <Configure

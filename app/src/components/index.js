@@ -11,6 +11,7 @@ export {
   chevronRight as ChevronRight,
   externalLink as ExternalLink,
   githubWorkflow as GitHubWorkflow,
+  info as Info,
   loading as Loading,
   logo as Logo,
   workersToken as ApiToken,
