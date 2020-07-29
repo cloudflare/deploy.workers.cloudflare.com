@@ -1,3 +1,7 @@
-deploy to cloudflare workers!
+# Deploy to Cloudflare Workers
 
-h/t to https://github.com/gr2m/cloudflare-worker-github-oauth-login for inspiration on the github oauth login code!
+A GitHub OAuth integration for deploying projects to Cloudflare Workers using GitHub Actions. 
+
+## Using this project
+
+This is the code for the user interface found at https://deploy-to-cf-workers.signalnerve.workers.dev. If you're interested in configuring an open-source project or repo that you own for use with this user interface, check out [`DEVELOPERS.md`](https://github.com/signalnerve/deploy-to-cf-workers/blob/master/DEVELOPERS.md).
