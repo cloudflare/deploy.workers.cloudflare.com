@@ -49,7 +49,7 @@ export default ({ accountId, forkedRepo, url }) => (
               </div>
               <a
                 className="self-center bg-blue-4 py-2 px-4 rounded-md text-white flex items-center"
-                href={forkedRepo}
+                href={`https://github.com/${forkedRepo}`}
                 rel="noopener noreferrer"
                 target="_blank"
               >
