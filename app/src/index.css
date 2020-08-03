@@ -99,7 +99,7 @@ code {
   animation: spin 1s linear infinite;
 }
 
-@keyframes fade {
+@keyframes fadeopacity {
   0% {
     opacity: 10%;
   }
@@ -109,5 +109,5 @@ code {
 }
 
 .fade {
-  animation: fade 1s linear infinite alternate;
+  animation: fadeopacity 1s linear infinite;
 }
