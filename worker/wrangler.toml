@@ -1,10 +1,11 @@
 name = "deploy-to-cf-workers"
 type = "webpack"
-account_id = "dc56444c4c955a1653106ccf997c1067"
-workers_dev = true
+account_id = "8995c0f49cdcf57eb54d2c1e52b7d2f3"
+zone_id = "29ed9c83c2c78d6967876c4053ec8154"
+route = "https://deploy.workers.cloudflare.com/*"
 
 kv-namespaces = [
-  { binding = "AUTH_STORE", id = "8f005ce95ab94b98936b96d8bc46693b", preview_id = "8f005ce95ab94b98936b96d8bc46693b" }
+  { binding = "AUTH_STORE", id = "3cfefdfc6cd34c7b986848720666fb6a", preview_id = "3cfefdfc6cd34c7b986848720666fb6a" }
 ]
 
 [vars]
