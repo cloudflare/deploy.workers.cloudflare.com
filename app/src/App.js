@@ -97,7 +97,7 @@ const Info = () => {
           : "p-2 md:-translate-x-sidebar-md lg:-translate-x-sidebar-lg xl:-translate-x-sidebar-xl",
       ].join("")}
     >
-      <div>
+      <div className={expanded ? "" : "opacity-0"}>
         <div
           className="cursor-pointer float-right"
           onClick={() => setExpanded(false)}
