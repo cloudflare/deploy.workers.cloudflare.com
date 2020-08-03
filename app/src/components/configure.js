@@ -225,7 +225,7 @@ export default ({
                   <div>
                     <a
                       className="text-blue-4 text-sm font-semibold flex items-center"
-                      href="https://dash.cloudflare.com/profile"
+                      href="https://dash.cloudflare.com/profile/api-tokens"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
