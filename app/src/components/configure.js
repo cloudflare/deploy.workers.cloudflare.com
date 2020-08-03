@@ -57,7 +57,6 @@ export default ({
     event.preventDefault();
     send("VERIFYING");
 
-    // verify
     try {
       const resp = await fetch(`/verify`, {
         method: "POST",

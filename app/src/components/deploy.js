@@ -27,7 +27,12 @@ const machine = Machine({
     },
     forked: {
       on: {
-        ENABLE_ACTIONS: "ready_to_deploy",
+        ENABLE_ACTIONS: "confirm_actions_enabled",
+      },
+    },
+    confirm_actions_enabled: {
+      on: {
+        CONFIRM: "ready_to_deploy",
       },
     },
     ready_to_deploy: {
@@ -112,7 +117,9 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
             </div>
           </Subsection>
           <Subsection
-            active={subcurrent.value === "forked"}
+            active={["forked", "confirm_actions_enabled"].includes(
+              subcurrent.value
+            )}
             title="Enable GitHub Actions"
           >
             <div>
@@ -120,13 +127,21 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                 current.matches("deploying_setup")) && (
                 <>
                   <p>
-                    Deploy to Workers by enabling Github Workflows on the forked
-                    repo.
+                    Navigate to your new repository’s Actions page and enable
+                    Github Actions
                   </p>
-                  <div className="my-6">
+                  <div
+                    className={`my-6
+                  ${
+                    subcurrent.value === "confirm_actions_enabled"
+                      ? "opacity-50"
+                      : ""
+                  } `}
+                  >
                     <a
                       className="text-blue-4 text-sm font-semibold flex items-center"
                       href={`https://github.com/${forkedRepo}/actions`}
+                      onClick={enable}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
@@ -138,8 +153,14 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                     </div>
                   </div>
                   <button
-                    className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-4 hover:bg-blue-4 focus:outline-none focus:border-blue-4 focus:shadow-outline-indigo active:bg-blue-4 transition duration-150 ease-in-out"
-                    onClick={enable}
+                    className={[
+                      `py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-4 hover:bg-blue-4 focus:outline-none focus:border-blue-4 focus:shadow-outline-indigo active:bg-blue-4 transition duration-150 ease-in-out`,
+                      subcurrent.value === "confirm_actions_enabled"
+                        ? ""
+                        : "opacity-50 cursor-not-allowed",
+                    ].join(" ")}
+                    disabled={subcurrent.value !== "confirm_actions_enabled"}
+                    onClick={() => subsend("CONFIRM")}
                   >
                     Workflows are enabled
                   </button>
