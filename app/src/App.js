@@ -276,7 +276,13 @@ const App = () => {
 
   const in_progress = (
     <div className="flex flex-col items-center min-h-screen">
-      <Logo />
+      <a
+        href="https://workers.cloudflare.com"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Logo />
+      </a>
       <div className="flex">
         <div className="flex-1" />
         <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded border flex flex-col pt-6 pb-10 px-10">

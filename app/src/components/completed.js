@@ -13,7 +13,13 @@ const simpleRepoName = (urlString) => {
 
 export default ({ accountId, forkedRepo, url }) => (
   <div className="flex flex-col items-center">
-    <Logo />
+    <a
+      href="https://workers.cloudflare.com"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <Logo />
+    </a>
     <div className="max-w-4xl md:w-2/3 mt-8 mx-auto md:pb-12 md:px-4 md:px-6 lg:px-8">
       <div className="h-full bg-white rounded border flex flex-col">
         <div className="px-6 py-4 flex items-center">
