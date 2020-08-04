@@ -44,8 +44,8 @@ export default ({ accountId, forkedRepo, url }) => (
             This could take a little while as Github Actions builds the project.
             Checkout some of the next steps we have below.
           </p>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col p-4 border rounded h-64 mb-4">
+          <div className="w-full lg:grid grid-cols-3 gap-4">
+            <div className="flex flex-col p-4 border rounded h-48 lg:h-64 mb-4">
               <div className="flex-1">
                 <h2 className="text-gray-1 text-lg mb-4">Go to Repo</h2>
                 <p className="text-gray-3 text-sm">
@@ -63,7 +63,7 @@ export default ({ accountId, forkedRepo, url }) => (
                 <ExternalLink fill="white" />
               </a>
             </div>
-            <div className="flex flex-col p-4 border rounded h-64 mb-4">
+            <div className="flex flex-col p-4 border rounded h-48 lg:h-64 mb-4">
               <div className="flex-1">
                 <h2 className="text-gray-1 text-lg mb-4">Go to Worker</h2>
                 <p className="text-gray-3 text-sm">
@@ -81,7 +81,7 @@ export default ({ accountId, forkedRepo, url }) => (
                 <ExternalLink />
               </a>
             </div>
-            <div className="flex flex-col p-4 border rounded h-64">
+            <div className="flex flex-col p-4 border rounded h-48 lg:h-64">
               <div className="flex-1">
                 <h2 className="text-gray-1 text-lg mb-4">Begin Deploying</h2>
                 <p className="text-gray-3 text-sm">
