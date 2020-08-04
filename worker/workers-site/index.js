@@ -152,7 +152,7 @@ const handleCallback = async (event) => {
   const result = await response.json();
 
   if (result.error) {
-    return new Response(JSON.stringify(result), { status: 401 });
+    return Response.redirect(url.origin);
   }
 
   const key = await jose.JWK.createKey("oct", 256, { alg: "A256GCM" });
