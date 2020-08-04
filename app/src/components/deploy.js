@@ -130,27 +130,29 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                     Navigate to your new repository’s Actions page and enable
                     Github Actions
                   </p>
-                  <div
-                    className={`my-6
-                  ${
-                    subcurrent.value === "confirm_actions_enabled"
-                      ? "opacity-50"
-                      : ""
-                  } `}
-                  >
+                  <div className="my-6">
                     <a
-                      className="text-blue-4 text-sm font-semibold flex items-center"
+                      className="text-blue-4 text-sm font-semibold"
                       href={`https://github.com/${forkedRepo}/actions`}
                       onClick={enable}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      <span className="mr-2">Repository - Actions</span>
-                      <ExternalLink />
+                      <div className="flex items-center">
+                        <span className="mr-2">Repository - Actions</span>
+                        <ExternalLink />
+                      </div>
+                      <div
+                        className={`mt-2
+                  ${
+                    subcurrent.value === "confirm_actions_enabled"
+                      ? "opacity-50"
+                      : ""
+                  } `}
+                      >
+                        <GitHubWorkflow />
+                      </div>
                     </a>
-                    <div className="mt-2">
-                      <GitHubWorkflow />
-                    </div>
                   </div>
                   <button
                     className={[
