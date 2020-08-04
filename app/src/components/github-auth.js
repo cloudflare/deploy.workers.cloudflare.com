@@ -31,6 +31,8 @@ export default ({ current }) => (
         <a
           className="text-blue-4 font-semibold"
           href="https://github.com/settings/connections/applications/c8375251e295d44406c5"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           GitHub Account settings
         </a>
