@@ -20,6 +20,9 @@
 .bg-blue-7 {
   background-color: var(--blue-7);
 }
+.bg-gray-3 {
+  background-color: var(--gray-3);
+}
 .bg-orange-9 {
   background-color: var(--orange-9);
 }
