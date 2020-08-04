@@ -49,11 +49,6 @@ async function handleEvent(event) {
     return Response.redirect(redirectUrl);
   }
 
-  // hard-refresh for kv consistency fun
-  if (url.searchParams.get("authed")) {
-    return Response.redirect(url.origin);
-  }
-
   return renderApp(event, { error, state: { accessToken } });
 }
 
@@ -157,7 +152,7 @@ const handleCallback = async (event) => {
   const result = await response.json();
 
   if (result.error) {
-    return new Response(JSON.stringify(result), { status: 401 });
+    return Response.redirect(url.origin);
   }
 
   const key = await jose.JWK.createKey("oct", 256, { alg: "A256GCM" });
@@ -176,7 +171,7 @@ const handleCallback = async (event) => {
 
   const headers = {
     Location: url.origin + `?authed=true`,
-    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Strict;`,
+    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Lax;`,
   };
 
   return new Response(null, {
