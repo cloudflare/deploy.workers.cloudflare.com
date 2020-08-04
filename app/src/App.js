@@ -164,6 +164,18 @@ const App = () => {
   };
 
   useEffect(() => {
+    if (document.cookie.includes("Authed-User")) {
+      const edge_state = JSON.parse(
+        document.querySelector("#edge_state").innerText
+      );
+
+      if (!Object.keys(edge_state.state).length) {
+        window.location.reload();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const windowUrl = new URL(window.location);
     const isPaidParam = windowUrl.searchParams.get("paid");
     const lsIsPaid = localStorage.getItem("isPaid");
