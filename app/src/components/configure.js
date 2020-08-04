@@ -187,20 +187,24 @@ export default ({
                       value={accountId || ""}
                     />
                   </div>
-                  <div>
-                    <a
-                      className="text-blue-4 text-sm font-semibold flex items-center"
-                      href="https://dash.cloudflare.com"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
+                  <a
+                    className="text-blue-4 text-sm font-semibold"
+                    href="https://dash.cloudflare.com"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <div className="flex items-center">
                       <span className="mr-2">Workers Dashboard</span>
                       <ExternalLink />
-                    </a>
-                    <div className="mt-2">
+                    </div>
+                    <div
+                      className={`mt-2 transition-opacity duration-150 ease-in-out ${
+                        accountId && apiToken ? "opacity-50" : ""
+                      }`}
+                    >
                       <AccountId />
                     </div>
-                  </div>
+                  </a>
                 </div>
 
                 <div>
@@ -221,20 +225,24 @@ export default ({
                       value={apiToken || ""}
                     />
                   </div>
-                  <div>
-                    <a
-                      className="text-blue-4 text-sm font-semibold flex items-center"
-                      href="https://dash.cloudflare.com/profile/api-tokens"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
+                  <a
+                    className="text-blue-4 text-sm font-semibold"
+                    href="https://dash.cloudflare.com/profile/api-tokens"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <div className="flex items-center">
                       <span className="mr-2">My Profile</span>
                       <ExternalLink />
-                    </a>
-                    <div className="mt-2">
+                    </div>
+                    <div
+                      className={`mt-2 transition-opacity duration-150 ease-in-out ${
+                        accountId && apiToken ? "opacity-50" : ""
+                      }`}
+                    >
                       <ApiToken />
                     </div>
-                  </div>
+                  </a>
                 </div>
               </div>
 
