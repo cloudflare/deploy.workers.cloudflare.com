@@ -115,7 +115,7 @@ export default ({
                     </button>
                     <a
                       className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                      href="https://www.cloudflare.com"
+                      href="https://dash.cloudflare.com/?to=/:account/workers/plans"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
@@ -124,7 +124,7 @@ export default ({
                     </a>
                     <a
                       className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                      href="https://www.cloudflare.com"
+                      href="https://dash.cloudflare.com/sign-up/workers"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
@@ -142,7 +142,7 @@ export default ({
                     </button>
                     <a
                       className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                      href="https://www.cloudflare.com"
+                      href="https://dash.cloudflare.com/sign-up/workers"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
@@ -189,7 +189,7 @@ export default ({
                   </div>
                   <a
                     className="text-blue-4 text-sm font-semibold"
-                    href="https://dash.cloudflare.com"
+                    href="https://dash.cloudflare.com/?to=/:account/workers"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
