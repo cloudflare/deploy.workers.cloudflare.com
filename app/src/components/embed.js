@@ -29,7 +29,12 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
 
   return embed && embed.image ? (
     <div class="h-24 max-w-2xl w-full border border-gray-7 overflow-hidden overflow-hidden rounded-lg">
-      <a href={linkUrl || url} title={embed.title}>
+      <a
+        href={linkUrl || url}
+        title={embed.title}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <div className="flex h-full">
           <img
             alt={embed.title}
