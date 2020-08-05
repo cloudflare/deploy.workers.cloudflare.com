@@ -101,16 +101,3 @@ code {
 .loading {
   animation: spin 1s linear infinite;
 }
-
-@keyframes fadeopacity {
-  0% {
-    opacity: 10%;
-  }
-  100% {
-    opacity: 100%;
-  }
-}
-
-.fade {
-  animation: fadeopacity 1s linear infinite;
-}
