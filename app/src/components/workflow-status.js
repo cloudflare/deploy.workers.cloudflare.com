@@ -210,7 +210,7 @@ const WorkflowStatus = ({ repo }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect rx="100" height="100%" width="100%">
-            {!runStatus || runStatus === "Running" ? (
+            {!runStatus || ["Running", "Queued"].includes(runStatus) ? (
               <animate
                 attributeName="opacity"
                 values="0.5;1;0.5"
