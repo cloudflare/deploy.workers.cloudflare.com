@@ -29,7 +29,12 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
 
   return embed && embed.image ? (
     <div class="h-24 max-w-2xl w-full border border-gray-7 overflow-hidden overflow-hidden rounded-lg">
-      <a href={linkUrl || url} title={embed.title}>
+      <a
+        href={linkUrl || url}
+        title={embed.title}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <div className="flex h-full">
           <img
             alt={embed.title}
@@ -37,8 +42,8 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
             src={embed.image}
           />
           <div class="px-4 py-2 flex flex-col justify-content">
-            <p className="text-gray-800 flex-1">{embed.title}</p>
-            <p className="text-sm leading-5 text-gray-500">
+            <p className="text-black flex-1">{embed.title}</p>
+            <p className="text-sm leading-5 text-gray-3">
               {(decodedDescription
                 ? decodedDescription
                 : embed.description
