@@ -97,6 +97,7 @@ export default ({
                 : "Use an existing Cloudflare account or create a new one"
             }
             active={subcurrent.value === "initial"}
+            past={subcurrent.value !== "initial"}
           >
             <div>
               <p className="mb-4">

@@ -91,6 +91,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
         <>
           <Subsection
             active={["initial", "error"].includes(subcurrent.value)}
+            past={subcurrent.value !== "initial"}
             title="Fork repository"
           >
             <div>
@@ -120,6 +121,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
             active={["forked", "confirm_actions_enabled"].includes(
               subcurrent.value
             )}
+            past={["ready_to_deploy", "deploying"].includes(subcurrent.value)}
             title="Enable GitHub Actions"
           >
             <div>
