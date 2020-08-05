@@ -37,8 +37,8 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
             src={embed.image}
           />
           <div class="px-4 py-2 flex flex-col justify-content">
-            <p className="text-gray-800 flex-1">{embed.title}</p>
-            <p className="text-sm leading-5 text-gray-500">
+            <p className="text-black flex-1">{embed.title}</p>
+            <p className="text-sm leading-5 text-gray-3">
               {(decodedDescription
                 ? decodedDescription
                 : embed.description
