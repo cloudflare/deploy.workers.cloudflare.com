@@ -23,34 +23,35 @@ export default ({ accountId, forkedRepo, url }) => (
     <div className="max-w-4xl md:w-2/3 mt-8 mx-auto md:pb-12 md:px-4 md:px-6 lg:px-8">
       <div className="h-full bg-white rounded border flex flex-col">
         <div className="px-6 py-4 flex items-center">
-          <h1 className="text-header">
-            Celebrate! You are now deploying to Workers
-          </h1>
+          <h1 className="text-header mr-12">Deployment is now in progress</h1>
+          <WorkflowStatus repo={forkedRepo} />
         </div>
-        <div className="flex-1 px-6 py-4">
-          <img
-            alt="Completed"
-            className="bg-gray-200 object-cover w-full h-64 mb-4"
-            lazy="loading"
-            src="https://images.unsplash.com/photo-1533243216203-8c08406d4583?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80"
-          />
-          <div className="flex items-center mt-8">
-            <span className="text-gray-1 text-lg mr-4">
-              Congratulations, {simpleRepoName(url)} is deploying!
+        <div className="flex-1 px-6 pb-4">
+          <div className="flex items-center">
+            <span className="text-gray-1 text-lg">
+              Congratulations, <strong>{simpleRepoName(url)}</strong> is in the
+              process of deploying!
             </span>
-            <WorkflowStatus repo={forkedRepo} />
           </div>
-          <p className="text-gray-1 mt-2 mb-6">
-            This could take a little while as Github Actions builds the project.
-            Checkout some of the next steps we have below.
+          <p className="text-gray-1 my-4">
+            This could take a short while as GitHub actions builds the project,
+            creates a Worker, and deploys to it. While you wait, review the
+            project repository for any additional configurations and check some
+            of the next steps that we have below.
           </p>
+          <img
+            className="object-cover w-full my-8"
+            alt="Completed"
+            lazy="loading"
+            src="/success-graphic.svg"
+          />
           <div className="w-full lg:grid grid-cols-3 gap-4">
             <div className="flex flex-col p-4 border rounded h-48 lg:h-64 mb-4">
               <div className="flex-1">
-                <h2 className="text-gray-1 text-lg mb-4">Go to Repo</h2>
+                <h2 className="text-gray-1 text-lg mb-4">GitHub Repository</h2>
                 <p className="text-gray-3 text-sm">
-                  Additional configuration may be required for the project. You
-                  may want to consult the README in your repo.
+                  Clone your project, complete additional configurations, and
+                  start developing!
                 </p>
               </div>
               <a
@@ -65,10 +66,10 @@ export default ({ accountId, forkedRepo, url }) => (
             </div>
             <div className="flex flex-col p-4 border rounded h-48 lg:h-64 mb-4">
               <div className="flex-1">
-                <h2 className="text-gray-1 text-lg mb-4">Go to Worker</h2>
+                <h2 className="text-gray-1 text-lg mb-4">Your new Worker</h2>
                 <p className="text-gray-3 text-sm">
-                  Grab the URL for the deployed project and see additional
-                  monitoring information for your Worker.
+                  Visit your Worker to monitor its status, configure additional
+                  routes, and to see your deployment live.
                 </p>
               </div>
               <a
@@ -83,10 +84,12 @@ export default ({ accountId, forkedRepo, url }) => (
             </div>
             <div className="flex flex-col p-4 border rounded h-48 lg:h-64">
               <div className="flex-1">
-                <h2 className="text-gray-1 text-lg mb-4">Begin Deploying</h2>
+                <h2 className="text-gray-1 text-lg mb-4">
+                  Developing with Workers
+                </h2>
                 <p className="text-gray-3 text-sm">
-                  Configure a local dev environment and learn more about Workers
-                  and how to develop with serverless.
+                  Now that you have your project, learn how to efficiently
+                  develop and deploy with Workers.
                 </p>
               </div>
               <a
@@ -95,7 +98,7 @@ export default ({ accountId, forkedRepo, url }) => (
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <span className="mr-2">Quick start</span>
+                <span className="mr-2">Workers docs</span>
                 <ExternalLink />
               </a>
             </div>
@@ -103,15 +106,15 @@ export default ({ accountId, forkedRepo, url }) => (
         </div>
       </div>
       <div className="mt-4 border border-blue-6 bg-blue-7 text-blue-1 shadow px-6 py-4 rounded">
-        We hope this process went smoothly. If you have any feedback, positive
-        or negative, we would love to hear it via this{" "}
+        Thank you for deploying with us. If you have any feedback, please take
+        our{" "}
         <a
           className="font-semibold underline"
           href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
           rel="noopener noreferrer"
           target="_blank"
         >
-          short feedback survey
+          short survey
         </a>
         .
       </div>
