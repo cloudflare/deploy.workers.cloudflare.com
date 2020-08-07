@@ -1,17 +1,18 @@
 import React from "react";
-import { Logo, Templates } from "./index";
+import { Logo, Templates, Sidebar } from "./index";
 
 export default () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center min-h-screen">
       <Logo />
-      <div className="max-w-4xl md:w-2/3 mt-8 mx-auto md:pb-12 md:px-4 md:px-6 lg:px-8">
-        <div className="h-full bg-white rounded border flex flex-col">
+      <div className="flex">
+        <div className="flex-1" />
+        <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded border flex flex-col pt-6 pb-10 px-10">
           <div className="px-6 pt-4 flex items-center">
             <h1 className="text-header">Deploy a new project to Workers</h1>
           </div>
           <div className="flex-1 px-6 pt-4">
-            <p className="">
+            <p>
               Check out some of these great projects that are configured to
               quickly deploy to the Cloudflare Workers platform.
             </p>
@@ -36,6 +37,19 @@ export default () => {
               </a>
             </div>
           </div>
+        </div>
+        <Sidebar />
+      </div>
+      <div className="min-w-3xl max-w-3xl w-full">
+        <div className="flex-1 mt-2 text-right">
+          <a
+            className="font-semibold text-blue-4 mt-2 text-sm"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Feedback survey
+          </a>
         </div>
       </div>
     </div>

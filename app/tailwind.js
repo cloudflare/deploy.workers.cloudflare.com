@@ -2,9 +2,10 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        "sidebar-md": "72%",
-        "sidebar-lg": "78%",
-        "sidebar-xl": "84%",
+        sidebar: "5rem",
+        "sidebar-md": "7rem",
+        "sidebar-lg": "7rem",
+        "sidebar-xl": "9rem",
       },
     },
   },
