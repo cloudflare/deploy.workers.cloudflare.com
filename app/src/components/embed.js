@@ -47,7 +47,7 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
               {(decodedDescription
                 ? decodedDescription
                 : embed.description
-              ).slice(0, 240)}
+              ).slice(0, 128)}
             </p>
           </div>
         </div>

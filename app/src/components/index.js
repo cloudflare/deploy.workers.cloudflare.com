@@ -18,6 +18,7 @@ export {
 } from "./icons";
 export { default as MissingUrl } from "./missing-url";
 export { default as Section } from "./section";
+export { default as Sidebar } from "./sidebar";
 export { default as Subsection } from "./subsection";
 export { default as Templates } from "./templates";
 export { default as WorkflowStatus } from "./workflow-status";
