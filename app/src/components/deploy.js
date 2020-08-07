@@ -10,6 +10,8 @@ import {
   Subsection,
 } from "./index";
 
+import { get, set } from "../cache";
+
 const machine = Machine({
   id: "deploy",
   initial: "initial",
@@ -69,14 +71,14 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
 
   const enable = () => {
     subsend("ENABLE_ACTIONS");
-    localStorage.setItem("actionsEnabled", true);
+    set("actionsEnabled", true);
   };
 
   useEffect(() => {
     if (forkedRepo) subsend("FORK");
-    const enabled = localStorage.getItem("actionsEnabled");
+    const enabled = get("actionsEnabled");
     if (enabled) subsend("ENABLE_ACTIONS");
-    const deployed = localStorage.getItem("deployed");
+    const deployed = get("deployed");
     if (deployed) send("COMPLETE");
   });
 
