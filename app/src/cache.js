@@ -21,3 +21,8 @@ export const get = (key) => {
 };
 
 export const set = (key, value) => lscache.set(key, value, DEFAULT_EXPIRY);
+
+export const startOver = () => {
+  clear();
+  window.location.search = "";
+};

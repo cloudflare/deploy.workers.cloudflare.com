@@ -1,6 +1,7 @@
 import React from "react";
 
-import { ExternalLink, Logo, WorkflowStatus } from "./index";
+import { ExternalLink, Logo, WorkflowStatus, Refresh } from "./index";
+import { startOver } from "../cache";
 
 const simpleRepoName = (urlString) => {
   if (urlString && urlString.length) {
@@ -117,6 +118,17 @@ export default ({ accountId, forkedRepo, url }) => (
           short survey
         </a>
         .
+      </div>
+      <div className="min-w-3xl mt-2 max-w-3xl w-full flex">
+        <div className="flex-1 text-left">
+          <button
+            className="font-semibold text-blue-4 text-sm flex items-center"
+            onClick={startOver}
+          >
+            <Refresh />
+            <span className="ml-2">Start over</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

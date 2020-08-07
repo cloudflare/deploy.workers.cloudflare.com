@@ -14,6 +14,7 @@ export {
   info as Info,
   loading as Loading,
   logo as Logo,
+  refresh as Refresh,
   workersToken as ApiToken,
 } from "./icons";
 export { default as MissingUrl } from "./missing-url";
