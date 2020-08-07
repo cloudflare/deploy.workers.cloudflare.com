@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Machine, assign } from "xstate";
 import { useMachine } from "@xstate/react";
+import { clear, get, set } from "./cache";
 
 import "./tailwind.css";
 import "./main.css";
@@ -95,12 +96,12 @@ const App = () => {
 
   const setAccountIdWithCache = (accountId) => {
     setAccountId(accountId);
-    localStorage.setItem("accountId", accountId);
+    set("accountId", accountId);
   };
 
   const setForkedRepoWithCache = (forkedRepo) => {
     setForkedRepo(forkedRepo);
-    localStorage.setItem("forkedRepo", forkedRepo);
+    set("forkedRepo", forkedRepo);
   };
 
   useEffect(() => {
@@ -118,27 +119,27 @@ const App = () => {
   useEffect(() => {
     const windowUrl = new URL(window.location);
     const isPaidParam = windowUrl.searchParams.get("paid");
-    const lsIsPaid = localStorage.getItem("isPaid");
+    const lsIsPaid = get("isPaid");
     if ((lsIsPaid || isPaidParam) === "true") {
       setIsPaid(true);
-      localStorage.setItem("isPaid", true);
+      set("isPaid", true);
     }
     const url = windowUrl.searchParams.get("url");
-    const lsUrl = localStorage.getItem("url");
+    const lsUrl = get("url");
     if (url) {
       setUrl(url);
 
       // New URL found that doesn't match LS,
       // need to clear all cache and start over
       if (lsUrl !== url) {
-        localStorage.clear();
-        localStorage.setItem("url", url);
+        clear();
+        set("url", url);
       }
     } else {
       lsUrl ? setUrl(lsUrl) : send("NO_URL");
     }
 
-    const lsForkedRepo = localStorage.getItem("forkedRepo");
+    const lsForkedRepo = get("forkedRepo");
     if (lsForkedRepo) {
       setForkedRepo(lsForkedRepo);
       send("LS_FORKED");
@@ -146,7 +147,7 @@ const App = () => {
 
     send("LOGIN");
 
-    const lsAccountId = localStorage.getItem("accountId");
+    const lsAccountId = get("accountId");
     if (lsAccountId) setAccountId(lsAccountId);
 
     if (edgeState && edgeState.accessToken) {
@@ -222,7 +223,7 @@ const App = () => {
         "User-Agent": "Deploy-to-CF-Workers",
       },
     });
-    localStorage.setItem("deployed", true);
+    set("deployed", true);
     send("COMPLETE");
   };
 
