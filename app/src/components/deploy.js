@@ -235,7 +235,11 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
             <div>
               <p>
                 This will initiate a deployment and your application will be
-                running on Workers shortly!
+                running on Workers shortly.
+              </p>
+              <p className="text-gray-3 mt-2 text-sm">
+                Note: Deploying a Worker with the same wrangler.toml name can
+                overwrite an existing Worker.
               </p>
               <div class="my-4">
                 <button
