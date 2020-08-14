@@ -239,7 +239,7 @@ const App = () => {
       </a>
       <div className="flex">
         <div className="flex-1" />
-        <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded border flex flex-col pt-6 pb-10 px-10">
+        <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded-lg border border-gray-7 flex flex-col pt-6 pb-10 px-10">
           <div className="flex items-center">
             <h1 className="text-header flex-1" onClick={() => setDebug(!debug)}>
               Deploy to Workers{" "}
@@ -255,17 +255,17 @@ const App = () => {
           </div>
           <div className="py-4">{url ? <Embed url={url} /> : null}</div>
           {isPaid ? (
-            <div className="text-gray-1 mx-2 mb-4 flex items-center">
+            <div className="text-gray-1 mx-2 mb-6 flex items-center">
               <InfoIcon className="w-4 h-4" />
               <div className="ml-2">
-                This project requires Workers KV, available only in the{" "}
+                This project requires Workers KV, available only in {" "}
                 <a
                   className="font-semibold text-blue-4"
                   href="https://workers.cloudflare.com/#plans"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Workers Bundled Plan
+                  Workers Bundled
                 </a>
                 .
               </div>

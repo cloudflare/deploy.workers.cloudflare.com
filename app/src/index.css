@@ -9,6 +9,7 @@
   --gray-1: #36393a;
   --gray-3: #62676a;
   --gray-7: #d5d7d8;
+  --gray-9: #F7F7F8;
   --red-5: #fcf0f2;
   --red-3: #f3bac3;
   --red-1: #a01c32;
@@ -67,6 +68,7 @@
 
 .text-header {
   font-size: 32px;
+  font-weight: 600;
 }
 
 body {
@@ -75,6 +77,7 @@ body {
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   font-size: 16px;
+  background-color: var(--gray-9);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
