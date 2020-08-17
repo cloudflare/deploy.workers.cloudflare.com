@@ -6,6 +6,7 @@
   --blue-7: #ebf4fa;
   --orange-5: #e06d10;
   --orange-9: #fdf1e7;
+  --gray-0: #404242;
   --gray-1: #36393a;
   --gray-3: #62676a;
   --gray-7: #d5d7d8;
@@ -41,6 +42,9 @@
 }
 .border-red-3 {
   border-color: var(--red-3);
+}
+.border-gray-0 {
+  border-color: var(--gray-0);
 }
 .border-gray-7 {
   border-color: var(--gray-7);

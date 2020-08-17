@@ -9,10 +9,10 @@ const TEMPLATES = [
   "https://github.com/wilsonzlin/edgesearch",
 ];
 
-export default () => (
+export default (deployable) => (
   <div className="grid grid-cols-1 gap-4">
     {TEMPLATES.map((template) => (
-      <Embed key={template} url={template} />
+      <Embed key={template} url={template} deployable={deployable} />
     ))}
   </div>
 );

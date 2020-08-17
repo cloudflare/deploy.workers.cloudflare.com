@@ -23,7 +23,7 @@ export default () => {
             </p>
 
             <div className="flex flex-col">
-              <Templates />
+              <Templates deployable={true} />
             </div>
 
             <div className="text-center py-6">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Embed = ({ quiet = false, url, linkUrl = null }) => {
+const Embed = ({ quiet = false, url, linkUrl = null, deployable = false }) => {
   const [embed, setEmbed] = useState(null);
   const [decodedDescription, setDecodedDescription] = useState(null);
   useEffect(() => {
@@ -50,6 +50,21 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
               ).slice(0, 128)}
             </p>
           </div>
+          {deployable ? (
+            <div className="mt-6 mb-8">
+              <a
+                className="inline-flex items-center mr-4 px-4 py-2 border border-gray-0 bg-gray-0  text-base leading-6 font-medium rounded-md focus:outline-none focus:border-blue-4 transition ease-in-out duration-150"
+                href={"https://deploy.workers.cloudflare.com/?url=" + (linkUrl || url)}
+                title={embed.title}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Deploy
+              </a>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </a>
     </div>
