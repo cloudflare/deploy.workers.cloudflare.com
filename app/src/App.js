@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Machine, assign } from "xstate";
 import { useMachine } from "@xstate/react";
-import { clear, get, set, startOver } from "./cache";
+import { clear, get, set } from "./cache";
 
 import "./tailwind.css";
 import "./main.css";
@@ -17,7 +17,6 @@ import {
   Logo,
   MissingUrl,
   Sidebar,
-  Refresh,
 } from "./components";
 
 export const appMachine = Machine(
