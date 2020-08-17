@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ExternalLink, Logo, WorkflowStatus, Refresh } from "./index";
+import { ExternalLink, Logo, WorkflowStatus } from "./index";
 import { startOver } from "../cache";
 
 const simpleRepoName = (urlString) => {
@@ -101,13 +101,12 @@ export default ({ accountId, forkedRepo, url }) => (
               </a>
             </div>
           </div>
-          <div className="flex-1 text-left">
+          <div className=" flex w-full justify-center">
             <button
-              className="font-semibold text-blue-4 text-sm flex items-center"
+              className="flex font-semibold text-blue-4 text-sm"
               onClick={startOver}
             >
-              <Refresh />
-              <span className="ml-2">Start over</span>
+              <span className="ml-2">See other deployable projects</span>
             </button>
           </div>
         </div>
@@ -123,17 +122,6 @@ export default ({ accountId, forkedRepo, url }) => (
           short survey
         </a>
         .
-      </div>
-      <div className="min-w-3xl mt-2 max-w-3xl w-full flex">
-        <div className="flex-1 text-left">
-          <button
-            className="font-semibold text-blue-4 text-sm flex items-center"
-            onClick={startOver}
-          >
-            <Refresh />
-            <span className="ml-2">Start over</span>
-          </button>
-        </div>
       </div>
     </div>
   </div>
