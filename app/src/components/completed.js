@@ -24,7 +24,6 @@ export default ({ accountId, forkedRepo, url }) => (
     <div className="max-w-4xl md:w-2/3 mt-8 mx-auto md:pb-12 md:px-4 md:px-6 lg:px-8">
       <div className="h-full bg-white rounded border flex flex-col">
         <div className="px-6 py-4 flex items-center">
-          <h1 className="text-header mr-12">Deployment is now in progress</h1>
           <WorkflowStatus repo={forkedRepo} />
         </div>
         <div className="flex-1 px-6 pb-4">
@@ -103,15 +102,6 @@ export default ({ accountId, forkedRepo, url }) => (
                 <ExternalLink />
               </a>
             </div>
-          </div>
-          <div className="flex-1 text-left">
-            <button
-              className="font-semibold text-blue-4 text-sm flex items-center"
-              onClick={startOver}
-            >
-              <Refresh />
-              <span className="ml-2">Start over</span>
-            </button>
           </div>
         </div>
       </div>
