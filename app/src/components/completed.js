@@ -104,6 +104,15 @@ export default ({ accountId, forkedRepo, url }) => (
               </a>
             </div>
           </div>
+          <div className="flex-1 text-left">
+            <button
+              className="font-semibold text-blue-4 text-sm flex items-center"
+              onClick={startOver}
+            >
+              <Refresh />
+              <span className="ml-2">Start over</span>
+            </button>
+          </div>
         </div>
       </div>
       <div className="mt-4 border border-blue-6 bg-blue-7 text-blue-1 shadow px-6 py-4 rounded">
