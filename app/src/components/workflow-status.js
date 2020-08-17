@@ -208,8 +208,8 @@ const WorkflowStatus = ({ repo }) => {
   }
 
   return (
-    <div>
-      <h1 className="text-header mr-12">
+    <div className="flex items-center">
+      <h1 className="text-header mr-4">
         Project {title ? title : "is deploying"}
       </h1>
       <a
