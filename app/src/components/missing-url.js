@@ -19,8 +19,7 @@ export default () => {
           </div>
           <div className="flex-1 px-6 pt-4 max-w-2xl">
             <p className="mb-6">
-              Check out some of these great projects, configured to
-              quickly deploy to the Cloudflare Workers platform.
+              Try quickly deploying one of these great projects to the Cloudflare Workers platform.
             </p>
 
             <div className="flex flex-col">
