@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "./index";
+import { startOver } from "../cache";
 
 export default () => {
   const [expanded, setExpanded] = useState(false);
@@ -47,6 +48,12 @@ export default () => {
             Learn more about Cloudflare Workers
           </a>
         </div>
+        <button
+              className="flex font-semibold text-blue-4 mt-6"
+              onClick={startOver}
+            >
+              <span>See other deployable projects</span>
+            </button>
       </div>
       <div className={`py-4 text-gray-3 ${expanded ? "hidden" : ""}`}>
         <div className="cursor-pointer" onClick={() => setExpanded(true)}>
