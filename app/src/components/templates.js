@@ -6,7 +6,7 @@ const TEMPLATES = [
   "https://github.com/bytesizedxyz/cloudflare-worker-cra",
   "https://github.com/adamschwartz/web.scraper.workers.dev",
   "https://github.com/signalnerve/placeholders.dev",
-  "https://github.com/davidtsong/worker-speedtest-template",
+  "https://github.com/GregBrimble/cf-workers-typescript-template",
 ];
 
 export default () => (
