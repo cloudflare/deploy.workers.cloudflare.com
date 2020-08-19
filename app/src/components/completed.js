@@ -22,7 +22,7 @@ export default ({ accountId, forkedRepo, url }) => (
       <Logo />
     </a>
     <div className="max-w-4xl md:w-2/3 mt-8 mx-auto md:pb-12 md:px-4 md:px-6 lg:px-8">
-      <div className="h-full bg-white rounded border flex flex-col">
+      <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded-lg border border-gray-7 flex flex-col pt-6 pb-10 px-10">
         <div className="px-6 py-4 flex flex-wrap items-center">
           <WorkflowStatus repo={forkedRepo} />
         </div>

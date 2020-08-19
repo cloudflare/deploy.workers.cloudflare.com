@@ -7,7 +7,7 @@ export default () => {
       <Logo />
       <div className="flex">
         <div className="flex-1" />
-        <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded border flex flex-col pt-6 pb-10 px-10">
+        <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded-lg border border-gray-7 flex flex-col pt-6 pb-10 px-10">
           <div className="px-6 pt-4 flex items-center">
             <h1 className="text-header">Deploy a new project to Workers</h1>
           </div>
