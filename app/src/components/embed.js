@@ -28,7 +28,7 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
   }, [url]);
 
   return embed && embed.image ? (
-    <div class="h-24 max-w-2xl w-full border border-gray-7 overflow-hidden overflow-hidden rounded-lg">
+    <div class="project-card h-24 max-w-2xl w-full border border-gray-7 overflow-hidden overflow-hidden rounded-lg">
       <a
         href={linkUrl || url}
         title={embed.title}
@@ -38,7 +38,7 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
         <div className="flex h-full">
           <img
             alt={embed.title}
-            className="object-cover w-32"
+            className="object-cover w-32 border-r border-gray-7"
             src={embed.image}
           />
           <div class="px-4 py-2 flex flex-col justify-content">
