@@ -30,15 +30,13 @@ export default ({ accountId, forkedRepo, url }) => (
         <div className="flex-1 px-6 pb-4">
           <div className="flex items-center">
             <span className="text-gray-1 text-lg">
-              Congratulations, <strong>{simpleRepoName(url)}</strong> is in the
-              process of deploying!
+              Congratulations, <strong>{simpleRepoName(url)}</strong> is now
+              deploying!
             </span>
           </div>
           <p className="text-gray-1 my-4">
-            This could take a short while as GitHub actions builds the project,
-            creates a Worker, and deploys to it. While you wait, review the
-            project repository for any additional configurations and check some
-            of the next steps that we have below.
+            This may take a few minutes. Check your project repository, visit
+            your new Worker, or learn more about Workers below.
           </p>
           <img
             className="object-cover w-full my-8"
@@ -52,7 +50,7 @@ export default ({ accountId, forkedRepo, url }) => (
                 <h2 className="text-gray-1 text-lg mb-4">GitHub Repository</h2>
                 <p className="text-gray-3 text-sm">
                   Clone your project, complete additional configurations, and
-                  start developing!
+                  start developing.
                 </p>
               </div>
               <a
@@ -107,8 +105,7 @@ export default ({ accountId, forkedRepo, url }) => (
         </div>
       </div>
       <div className="mt-4 border border-blue-6 bg-blue-7 text-blue-1 shadow px-6 py-4 rounded">
-        Thank you for deploying with us. If you have any feedback, please take
-        our{" "}
+        If you have any feedback, please take our{" "}
         <a
           className="font-semibold underline"
           href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"

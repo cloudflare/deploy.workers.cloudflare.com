@@ -98,8 +98,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
           >
             <div>
               <p>
-                The project repository will be forked so that you can configure
-                a build process with Github Actions and deploy to Workers.
+                This will allow us to use GitHub Actions to deploy to Workers.
               </p>
 
               <button
@@ -131,8 +130,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                 current.matches("deploying_setup")) && (
                 <>
                   <p>
-                    Navigate to your new repository’s Actions page and enable
-                    Github Actions
+                    Go to your new repository’s Actions page in GitHub and enable GitHub Actions. To continue setup, return here.
                   </p>
                   <div className="my-6">
                     <a
@@ -168,7 +166,7 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
                     disabled={subcurrent.value !== "confirm_actions_enabled"}
                     onClick={() => subsend("CONFIRM")}
                   >
-                    Workflows are enabled
+                    Workflows enabled
                   </button>
                 </>
               )}
@@ -234,12 +232,10 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
           >
             <div>
               <p>
-                This will initiate a deployment and your application will be
-                running on Workers shortly.
+                Deploy your project to Workers via GitHub Actions.
               </p>
               <p className="text-gray-3 mt-2 text-sm">
-                Note: Deploying a Worker with the same wrangler.toml name can
-                overwrite an existing Worker.
+                Deploying a Worker will overwrite an existing Worker of the same name set in the wrangler.toml.
               </p>
               <div class="my-4">
                 <button

@@ -11,7 +11,7 @@ export default () => {
           <div className="px-6 pt-4 flex items-center">
             <h1 className="text-header">Deploy a new project to Workers</h1>
           </div>
-          <div className="flex-1 px-6 pt-4">
+          <div className="flex-1 px-6 pt-4 max-w-2xl">
             <p>
               Check out some of these great projects that are configured to
               quickly deploy to the Cloudflare Workers platform.
@@ -26,31 +26,20 @@ export default () => {
               <Templates />
             </div>
 
-            <div className="text-center py-6">
-              <a
-                className="font-semibold text-blue-4"
-                rel="noopener noreferrer"
-                target="_blank"
-                href="https://workers.cloudflare.com/built-with"
-              >
-                View more projects
-              </a>
-            </div>
+            
           </div>
         </div>
         <Sidebar />
       </div>
-      <div className="min-w-3xl max-w-3xl w-full">
-        <div className="flex-1 mt-2 text-right">
+      <div class="min-w-3xl mt-2 max-w-3xl w-full flex text-left">
           <a
-            className="font-semibold text-blue-4 mt-2 text-sm"
+            className="font-semibold text-blue-4 text-sm"
             href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
             rel="noopener noreferrer"
             target="_blank"
           >
             Feedback survey
           </a>
-        </div>
       </div>
     </div>
   );

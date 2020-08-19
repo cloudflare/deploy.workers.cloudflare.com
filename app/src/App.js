@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Machine, assign } from "xstate";
 import { useMachine } from "@xstate/react";
-import { clear, get, set, startOver } from "./cache";
+import { clear, get, set } from "./cache";
 
 import "./tailwind.css";
 import "./main.css";
@@ -17,7 +17,6 @@ import {
   Logo,
   MissingUrl,
   Sidebar,
-  Refresh,
 } from "./components";
 
 export const appMachine = Machine(
@@ -294,26 +293,15 @@ const App = () => {
         </div>
         <Sidebar />
       </div>
-      <div className="min-w-3xl mt-2 max-w-3xl w-full flex">
-        <div className="flex-1 text-left">
-          <button
-            className="font-semibold text-blue-4 text-sm flex items-center"
-            onClick={startOver}
-          >
-            <Refresh />
-            <span className="ml-2">Start over</span>
-          </button>
-        </div>
-        <div className="flex-1 text-right">
+      <div class="min-w-3xl mt-2 max-w-3xl w-full flex text-left">
           <a
-            className="font-semibold text-blue-4 mt-2 text-sm"
+            className="font-semibold text-blue-4 text-sm"
             href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
             rel="noopener noreferrer"
             target="_blank"
           >
             Feedback survey
           </a>
-        </div>
       </div>
     </div>
   );

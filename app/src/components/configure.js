@@ -93,7 +93,7 @@ export default ({
           <Subsection
             title={
               isPaid
-                ? "Use an existing Cloudflare account with the Workers Bundled plan or create a new one"
+                ? "Use an existing Cloudflare account with Workers Bundled or create a new account."
                 : "Use an existing Cloudflare account or create a new one"
             }
             active={subcurrent.value === "initial"}
@@ -102,8 +102,8 @@ export default ({
             <div>
               <p className="mb-4">
                 {isPaid
-                  ? `Note: After you create or upgrade an account, return here to continue`
-                  : `Note: After you create an account, return here and continue with "I have an account" button.`}
+                  ? `Note: After you create or upgrade an account, return here to continue.`
+                  : `Note: After creating an account, return here to continue.`}
               </p>
               <div className="flex space-x-4">
                 {isPaid ? (
@@ -156,18 +156,21 @@ export default ({
             </div>
           </Subsection>
           <Subsection
-            title="Add Account information"
+            title="Add account information"
             active={subcurrent.value !== "initial"}
           >
             <form onSubmit={submit}>
               <div className="mb-4">
                 <p className="mb-2">
-                  Use your Account ID and create an API Token with Workers
-                  permissions.
-                </p>
-                <p className="text-sm">
-                  Note: API Token’s must have permission to edit Workers - We
-                  suggest the “Edit Workers Template”
+                  Enter your
+                  <a
+                    href="https://developers.cloudflare.com/workers/quickstart#account-id-and-zone-id"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Account ID and an API Token
+                  </a>{" "}
+                  with “Edit Workers” permissions.
                 </p>
               </div>
               <div className="flex">
