@@ -136,7 +136,7 @@ export default ({
                 ) : (
                   <>
                     <button
-                      className="bg-blue-4 py-2 px-4 rounded-md text-white"
+                      className="bg-blue-4 py-2 px-4 rounded-md text-white mr-4"
                       onClick={() => send("HAS_ACCOUNT")}
                     >
                       I have an account
@@ -162,7 +162,7 @@ export default ({
             <form onSubmit={submit}>
               <div className="mb-4">
                 <p className="mb-2">
-                  Enter your
+                  Enter your{" "}
                   <a
                     href="https://developers.cloudflare.com/workers/quickstart#account-id-and-zone-id"
                     rel="noopener noreferrer"
