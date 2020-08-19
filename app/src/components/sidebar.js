@@ -26,8 +26,7 @@ export default () => {
 
         <h3 className="mb-2 font-semibold text-lg">Distributed network</h3>
         <p>
-          Deploy serverless code to Cloudflare’s edge network across 200 cities
-          and 95 countries.
+          Deploy serverless code to Cloudflare’s edge network across 200 cities and 95 countries.
         </p>
 
         <h3 className="mt-6 font-semibold mb-2 text-lg">Fast start</h3>
@@ -35,8 +34,7 @@ export default () => {
 
         <h3 className="mt-6 font-semibold mb-2 text-lg">Free Tier</h3>
         <p>
-          First 100,000 requests each day are free and paid plans start at just
-          $5 per 10 million requests.
+          First 100,000 requests each day are free and paid plans start at just $5 per 10 million requests.
         </p>
 
         <div className="mt-6">

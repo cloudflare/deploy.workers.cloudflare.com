@@ -293,17 +293,15 @@ const App = () => {
         </div>
         <Sidebar />
       </div>
-      <div className="min-w-3xl mt-2 max-w-3xl w-full flex">
-        <div className="flex-1 text-right">
-          <a
-            className="font-semibold text-blue-4 mt-2 text-sm"
-            href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Feedback survey
-          </a>
-        </div>
+      <div class="min-w-3xl mt-2 max-w-3xl w-full flex text-left">
+        <a
+          className="font-semibold text-blue-4 text-sm"
+          href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Feedback survey
+        </a>
       </div>
     </div>
   );

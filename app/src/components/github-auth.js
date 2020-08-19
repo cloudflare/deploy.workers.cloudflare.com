@@ -11,8 +11,8 @@ export default ({ current }) => (
     active={
       <>
         <p className="mt-2 max-w-lg text-gray-1">
-          Allow access to Github to fork the selected project. Then, we will use
-          Github Actions to build and deploy to Cloudflare Workers
+          Allow Workers to fork the project from Github and deploy it using GitHub Actions.
+
         </p>
         <div className="mt-6 mb-8">
           <a
@@ -27,15 +27,7 @@ export default ({ current }) => (
     inactive={<></>}
     completed={
       <p>
-        Workers authorized on GitHub | Deauthorize on{" "}
-        <a
-          className="text-blue-4 font-semibold"
-          href="https://github.com/settings/connections/applications/c8375251e295d44406c5"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          GitHub Account settings
-        </a>
+        Workers authorized on GitHub
       </p>
     }
   />
