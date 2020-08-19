@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ExternalLink, Logo, WorkflowStatus, Refresh } from "./index";
+import { ExternalLink, Logo, WorkflowStatus } from "./index";
 import { startOver } from "../cache";
 
 const simpleRepoName = (urlString) => {
@@ -22,7 +22,7 @@ export default ({ accountId, forkedRepo, url }) => (
       <Logo />
     </a>
     <div className="max-w-4xl md:w-2/3 mt-8 mx-auto md:pb-12 md:px-4 md:px-6 lg:px-8">
-      <div className="h-full bg-white rounded border flex flex-col">
+      <div className="min-w-4xl max-w-4xl flex-2 min-h-full z-10 bg-white rounded-lg border border-gray-7 flex flex-col pt-6 pb-10 px-10">
         <div className="px-6 py-4 flex flex-wrap items-center">
           <WorkflowStatus repo={forkedRepo} />
         </div>
@@ -101,6 +101,14 @@ export default ({ accountId, forkedRepo, url }) => (
               </a>
             </div>
           </div>
+          <div className=" flex w-full justify-center">
+            <button
+              className="flex font-semibold text-blue-4 text-sm"
+              onClick={startOver}
+            >
+              <span className="ml-2">See other deployable projects</span>
+            </button>
+          </div>
         </div>
       </div>
       <div className="mt-4 border border-blue-6 bg-blue-7 text-blue-1 shadow px-6 py-4 rounded">
@@ -114,17 +122,6 @@ export default ({ accountId, forkedRepo, url }) => (
           short survey
         </a>
         .
-      </div>
-      <div className="min-w-3xl mt-2 max-w-3xl w-full flex">
-        <div className="flex-1 text-left">
-          <button
-            className="font-semibold text-blue-4 text-sm flex items-center"
-            onClick={startOver}
-          >
-            <Refresh />
-            <span className="ml-2">Start over</span>
-          </button>
-        </div>
       </div>
     </div>
   </div>
