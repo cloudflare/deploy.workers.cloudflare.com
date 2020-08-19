@@ -157,6 +157,7 @@ const WorkflowStatus = ({ repo }) => {
   const [workflowId, setWorkflowId] = useState(null);
   const [runId, setRunId] = useState(null);
   const [runStatus, setRunStatus] = useState(null);
+  var [title] = useState(null);
 
   const [, send] = useMachine(workflowMachine, {
     context: { repo },
@@ -186,12 +187,20 @@ const WorkflowStatus = ({ repo }) => {
   let baseColor;
   switch (runStatus) {
     case "Successful":
+      baseColor = "green";
+      title = "is deployed";
+      break;
     case "Running":
       baseColor = "green";
+      title = "is deployed";
       break;
     case "Error":
+      baseColor = "red";
+      title = "had an error";
+      break;
     case "Failed":
       baseColor = "red";
+      title = "has failed";
       break;
     default:
       baseColor = "indigo";
@@ -199,29 +208,38 @@ const WorkflowStatus = ({ repo }) => {
   }
 
   return (
-    <div>
-      <span
-        className={`inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 bg-${baseColor}-100 text-${baseColor}-800`}
+    <div className="flex items-center">
+      <h1 className="text-header mr-4">
+        Project {title ? title : "is deploying"}
+      </h1>
+      <a
+        href={`https://github.com/${repo}/actions`}
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        <svg
-          className={`-ml-1 mr-2 h-2 w-2 text-${baseColor}-400`}
-          fill="currentColor"
-          viewBox="0 0 8 8"
-          xmlns="http://www.w3.org/2000/svg"
+        <span
+          className={`inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 bg-${baseColor}-100 text-${baseColor}-800`}
         >
-          <rect rx="100" height="100%" width="100%">
-            {!runStatus || ["Running", "Queued"].includes(runStatus) ? (
-              <animate
-                attributeName="opacity"
-                values="0.5;1;0.5"
-                dur="2s"
-                repeatCount="indefinite"
-              />
-            ) : null}
-          </rect>
-        </svg>
-        {runStatus ? runStatus : "Initializing"}
-      </span>
+          <svg
+            className={`-ml-1 mr-2 h-2 w-2 text-${baseColor}-400`}
+            fill="currentColor"
+            viewBox="0 0 8 8"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect rx="100" height="100%" width="100%">
+              {!runStatus || ["Running", "Queued"].includes(runStatus) ? (
+                <animate
+                  attributeName="opacity"
+                  values="0.5;1;0.5"
+                  dur="2s"
+                  repeatCount="indefinite"
+                />
+              ) : null}
+            </rect>
+          </svg>
+          {runStatus ? runStatus : "Initializing"}
+        </span>
+      </a>
     </div>
   );
 };
