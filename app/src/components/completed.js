@@ -58,7 +58,7 @@ export default ({ accountId, forkedRepo, url }) => (
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <span className="mr-2">GitHub repository</span>
+                <span className="mr-2">GitHub repo</span>
                 <ExternalLink fill="white" />
               </a>
             </div>
@@ -76,7 +76,7 @@ export default ({ accountId, forkedRepo, url }) => (
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <span className="mr-2">Worker dashboard</span>
+                <span className="mr-2">Worker dash</span>
                 <ExternalLink />
               </a>
             </div>
