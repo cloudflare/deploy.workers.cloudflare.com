@@ -5,7 +5,7 @@ const TEMPLATES = [
   "https://github.com/signalnerve/workers-graphql-server",
   "https://github.com/bytesizedxyz/cloudflare-worker-cra",
   "https://github.com/adamschwartz/web.scraper.workers.dev",
-  "https://github.com/signalnerve/placeholders.dev",
+  "https://github.com/Cherry/placeholders.dev",
   "https://github.com/GregBrimble/cf-workers-typescript-template",
 ];
 
