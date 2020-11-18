@@ -39,11 +39,3 @@ deploy:
 ```
 
 ![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)
-
-**Does your project use Workers KV or other features only available in the Workers unlimited plan?** Providing the `paid=true` query parameter to the `/button` and the deploy application paths will render a "Deploy to Workers Unlimited" button, as seen below -- it will also render a notice in the UI that the project requires Workers Unlimited:
-
-```md
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button?paid=true)](https://deploy.workers.cloudflare.com/?url=https://github.com/YOURUSERNAME/YOURREPO&paid=true)
-```
-
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button?paid=true)](https://deploy.workers.cloudflare.com/?url=https://github.com/YOURUSERNAME/YOURREPO&paid=true)

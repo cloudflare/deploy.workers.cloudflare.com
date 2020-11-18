@@ -49,7 +49,6 @@ export default ({
   apiTokenState: [apiToken, setApiToken],
   complete,
   current,
-  isPaid,
 }) => {
   const [subcurrent, send] = useMachine(machine);
 
@@ -91,67 +90,32 @@ export default ({
       active={
         <>
           <Subsection
-            title={
-              isPaid
-                ? "Use an existing Cloudflare account with Workers Bundled or create a new account."
-                : "Use an existing Cloudflare account or create a new one"
-            }
+            title="Use an existing Cloudflare account or create a new one"
             active={subcurrent.value === "initial"}
             past={subcurrent.value !== "initial"}
           >
             <div>
               <p className="mb-4">
-                {isPaid
-                  ? `Note: After you create or upgrade an account, return here to continue.`
-                  : `Note: After creating an account, return here to continue.`}
+                Note: After creating an account, return here to continue.
               </p>
               <div className="flex space-x-4">
-                {isPaid ? (
-                  <>
-                    <button
-                      className="bg-blue-4 py-2 px-4 rounded-md text-white"
-                      onClick={() => send("HAS_ACCOUNT")}
-                    >
-                      I have a Bundled account
-                    </button>
-                    <a
-                      className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                      href="https://dash.cloudflare.com/?to=/:account/workers/plans"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <span className="mr-2">Upgrade plan</span>
-                      <ExternalLink />
-                    </a>
-                    <a
-                      className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                      href="https://dash.cloudflare.com/sign-up/workers"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <span className="mr-2">Create account</span>
-                      <ExternalLink />
-                    </a>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      className="bg-blue-4 py-2 px-4 rounded-md text-white mr-4"
-                      onClick={() => send("HAS_ACCOUNT")}
-                    >
-                      I have an account
-                    </button>
-                    <a
-                      className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
-                      href="https://dash.cloudflare.com/sign-up/workers"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <span className="mr-2">Create account</span>
-                      <ExternalLink />
-                    </a>
-                  </>
-                )}
+                <>
+                  <button
+                    className="bg-blue-4 py-2 px-4 rounded-md text-white mr-4"
+                    onClick={() => send("HAS_ACCOUNT")}
+                  >
+                    I have an account
+                  </button>
+                  <a
+                    className="border-2 border-blue-4 flex items-center justify-content text-blue-4 py-2 px-4 rounded-md"
+                    href="https://dash.cloudflare.com/sign-up/workers"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span className="mr-2">Create account</span>
+                    <ExternalLink />
+                  </a>
+                </>
               </div>
             </div>
           </Subsection>

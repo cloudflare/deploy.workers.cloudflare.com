@@ -20,9 +20,7 @@ async function handleEvent(event) {
   const url = new URL(request.url);
 
   if (url.pathname === "/button") {
-    const buttonPath = url.search.includes("paid")
-      ? `deploy-paid.svg`
-      : `deploy.svg`;
+    const buttonPath = `deploy.svg`;
     return await getAssetFromKV(event, {
       mapRequestToAsset: (req) =>
         new Request(`${new URL(req.url).origin}/${buttonPath}`, req),
