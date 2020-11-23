@@ -117,6 +117,17 @@ const App = () => {
   useEffect(() => {
     const windowUrl = new URL(window.location);
     const url = windowUrl.searchParams.get("url");
+    
+    // Validate URL query parameter actually legitimate to prevent XSS
+    try {
+      const parsedURL = new URL(url);
+      if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:")  {
+        send("NO_URL");
+      }
+    } catch (_) {
+      send("NO_URL");  
+    }
+    
     const lsUrl = get("url");
     if (url) {
       setUrl(url);
