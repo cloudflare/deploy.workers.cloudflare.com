@@ -169,7 +169,7 @@ const handleCallback = async (event) => {
 
   const headers = {
     Location: url.origin + `?authed=true`,
-    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Lax;`,
+    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; HttpOnly; SameSite=Lax;`,
   };
 
   return new Response(null, {
