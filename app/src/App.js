@@ -150,7 +150,7 @@ const App = () => {
   }, [send, edgeState]);
 
   const fork = async ({ accountId, apiToken, event }) => {
-    const regex = /github.com\/(?<owner>\w*)\/(?<repo>.*)/;
+    const regex = /github.com\/(?<owner>[^\/]+)\/(?<repo>[^\/]+)/;
     let urlToMatch = url;
     if (urlToMatch.endsWith("/")) urlToMatch = urlToMatch.slice(0, -1);
 
