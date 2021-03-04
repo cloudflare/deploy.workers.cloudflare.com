@@ -24,7 +24,7 @@ export default ({
     "font-bold -mt-1 -ml-4 mr-6 w-8 h-8 flex items-center justify-center font-mono font-semibold rounded-full";
 
   const fillClasses = `bg-blue-4 text-white`;
-  const outlineClasses = `bg-white text-gray-3 border-2 border-gray-7`;
+  const unreadClasses = `text-white bg-gray-4`;
 
   return (
     <>
@@ -36,7 +36,7 @@ export default ({
         <div
           className={[
             baseContainerClasses,
-            isComplete ? fillClasses : isActive ? fillClasses : outlineClasses,
+            isComplete ? fillClasses : isActive ? fillClasses : unreadClasses,
           ].join(" ")}
         >
           {isComplete ? (

@@ -1,18 +1,26 @@
 :root {
-  --blue-1: #163d57;
+  --blue-1: #002B67;
+  --blue-2: #003681;
   --blue-3: #276d9b;
-  --blue-4: #2c7cb0;
+  --blue-4: #0051c3;
   --blue-6: #add2eb;
   --blue-7: #ebf4fa;
-  --orange-5: #e06d10;
-  --orange-9: #fdf1e7;
+  --blue-8: #B9D6FF;
+  --orange-5: #F1740A;
+  --orange-9: #FEF1E6;
   --gray-1: #36393a;
   --gray-3: #62676a;
+  --gray-4: #767676;
   --gray-7: #d5d7d8;
   --gray-9: #F7F7F8;
   --red-5: #fcf0f2;
   --red-3: #f3bac3;
-  --red-1: #a01c32;
+  --red-1: #5C0801;
+  --red-8: #FED8D5;
+  --green-1: #104122;
+  --green-8: #BDEFCF;
+  --indigo-1: #261A93;
+  --indigo-9: #F1F0Fc;
 }
 
 .bg-blue-4 {
@@ -23,6 +31,9 @@
 }
 .bg-gray-3 {
   background-color: var(--gray-3);
+}
+.bg-gray-4 {
+  background-color: var(--gray-4);
 }
 .bg-orange-9 {
   background-color: var(--orange-9);
@@ -64,6 +75,19 @@
 }
 .text-red-1 {
   color: var(--red-1);
+}
+
+.label-green {
+  background-color: var(--green-8);
+  color: var(--green-1);
+}
+.label-red {
+  background-color: var(--red-8);
+  color: var(--red-1);
+}
+.label-indigo {
+  background-color: var(--indigo-9);
+  color: var(--indigo-1);
 }
 
 .text-header {
