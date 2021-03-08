@@ -25,3 +25,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           workingDirectory: worker
+          wranglerVersion: '1.13.0'
