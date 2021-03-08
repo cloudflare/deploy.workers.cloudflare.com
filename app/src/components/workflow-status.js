@@ -218,7 +218,7 @@ const WorkflowStatus = ({ repo }) => {
         target="_blank"
       >
         <span
-          className={`inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 bg-${baseColor}-100 text-${baseColor}-800`}
+          className={`inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 label-${baseColor}`}
         >
           <svg
             className={`-ml-1 mr-2 h-2 w-2 text-${baseColor}-400`}
