@@ -102,13 +102,17 @@ const App = () => {
     set("forkedRepo", forkedRepo);
   };
 
+  // Check for edge case (pun intented) where the Workers fn has successfully
+  // validated the user's auth state, even if the KV store hasn't updated to
+  // persist the auth data. If that case is found, refresh the page and we
+  // should have a persisted auth value
   useEffect(() => {
-    if (document.cookie.includes("Authed-User")) {
-      const edge_state = JSON.parse(
-        document.querySelector("#edge_state").innerText
-      );
+    const el = document.querySelector("#edge_state")
+    if (el && el.innerText) {
+      const edgeStateInnerText = el.innerText
+      const _edgeState = JSON.parse(edgeStateInnerText);
 
-      if (!Object.keys(edge_state.state).length) {
+      if (_edgeState.state.authed && !_edgeState.state.accessToken) {
         window.location.reload();
       }
     }
@@ -117,17 +121,17 @@ const App = () => {
   useEffect(() => {
     const windowUrl = new URL(window.location);
     const url = windowUrl.searchParams.get("url");
-    
+
     // Validate URL query parameter actually legitimate to prevent XSS
     try {
       const parsedURL = new URL(url);
-      if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:")  {
+      if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:") {
         send("NO_URL");
       }
     } catch (_) {
-      send("NO_URL");  
+      send("NO_URL");
     }
-    
+
     const lsUrl = get("url");
     if (url) {
       setUrl(url);
