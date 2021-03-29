@@ -47,7 +47,7 @@ async function handleEvent(event) {
     return Response.redirect(redirectUrl);
   }
 
-  return renderApp(event, { error, state: { accessToken } });
+  return renderApp(event, { error, state: { accessToken, authed } });
 }
 
 const handleSecret = async (event) => {
@@ -87,6 +87,8 @@ const handleSecret = async (event) => {
 };
 
 const validateCookie = async (event) => {
+  let authed = false
+
   try {
     const { request } = event;
     const cookieHeader =
@@ -101,13 +103,13 @@ const validateCookie = async (event) => {
       };
     }
 
-    const jsonKey = await AUTH_STORE.get(`keys:${auth}`);
-    const key = await jose.JWK.asKey(JSON.parse(jsonKey));
+    authed = true
 
-    const storedAuth = await AUTH_STORE.get(`auth:${auth}`);
-    const { payload } = await jose.JWE.createDecrypt(key).decrypt(
-      JSON.parse(storedAuth)
-    );
+    const jsonKey = await AUTH_STORE.get(`keys:${auth}`, { type: 'json' });
+    const key = await jose.JWK.asKey(jsonKey);
+
+    const storedAuth = await AUTH_STORE.get(`auth:${auth}`, { type: 'json' });
+    const { payload } = await jose.JWE.createDecrypt(key).decrypt(storedAuth)
 
     const { access_token: accessToken } = JSON.parse(payload);
 
@@ -121,12 +123,9 @@ const validateCookie = async (event) => {
     if (tokenResp.status > 201) {
       throw new Error("GitHub API response was invalid");
     }
-    return { accessToken, authed: true };
+    return { accessToken, authed };
   } catch (error) {
-    return {
-      authed: false,
-      error,
-    };
+    return { authed, error };
   }
 };
 
@@ -169,7 +168,7 @@ const handleCallback = async (event) => {
 
   const headers = {
     Location: url.origin + `?authed=true`,
-    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Lax;`,
+    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; HttpOnly; SameSite=Lax;`,
   };
 
   return new Response(null, {

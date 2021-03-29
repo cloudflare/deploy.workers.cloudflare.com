@@ -8,8 +8,15 @@ kv-namespaces = [
   { binding = "AUTH_STORE", id = "3cfefdfc6cd34c7b986848720666fb6a", preview_id = "3cfefdfc6cd34c7b986848720666fb6a" }
 ]
 
+[site]
+bucket = "../app/build"
+
 [vars]
 CLIENT_ID = "c8375251e295d44406c5"
 
-[site]
-bucket = "../app/build"
+[env.development]
+workers_dev = true
+
+kv-namespaces = [
+  { binding = "AUTH_STORE", id = "66830e6b0b5d4c46959763dd787db72f", preview_id = "66830e6b0b5d4c46959763dd787db72f" }
+]
