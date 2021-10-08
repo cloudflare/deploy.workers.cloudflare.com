@@ -92,7 +92,7 @@ const validateCookie = async (event) => {
   try {
     const { request } = event;
     const cookieHeader =
-      request.headers.get("Cookie") || request.headers.get("Set-cookie");
+      request.headers.get("Cookie") || request.headers.get("Set-cookie") || ""; // cookie.parse accepts string only, undefined throws error
     const cookies = cookie.parse(cookieHeader);
     const auth = cookies[cookieKey];
 
