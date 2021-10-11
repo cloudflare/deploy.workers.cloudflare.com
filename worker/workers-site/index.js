@@ -43,6 +43,11 @@ async function handleEvent(event) {
     event
   );
 
+  // redirect to homepage if user is authed already
+  if (url.pathname === "/login" && authed) {
+    return Response.redirect(`${url.origin}/`)
+  }
+  
   if (url.pathname === "/login" && !authed && redirectUrl) {
     return Response.redirect(redirectUrl);
   }
