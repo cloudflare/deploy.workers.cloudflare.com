@@ -21,18 +21,17 @@ export const validateCookie = async (env, request) => {
 		}
 
 		const kvKey = await env.AUTH_STORE.get(`keys:${auth}`, 'json');
-		const storedAuth = await env.AUTH_STORE.get(`auth:${auth}`);
+		const storedAuth = await env.AUTH_STORE.get(`auth:${auth}`, 'arrayBuffer');
 
 		const key = await crypto.subtle.importKey('jwk', kvKey.jwk, algo, true, ['decrypt']);
 
-		// TODO getting "Error: Cipher job failed"
 		const decrypted = await crypto.subtle.decrypt(
-			{ name: algo.name, iv: new TextEncoder().encode(kvKey.iv) },
+			{ name: algo.name, iv: base64_to_buf(kvKey.iv) },
 			key,
-			new TextEncoder().encode(storedAuth)
+			storedAuth
 		);
 
-		const { access_token: accessToken } = JSON.parse(decrypted);
+		const { access_token: accessToken } = JSON.parse(new TextDecoder().decode(decrypted));
 
 		const tokenResp = await fetch('https://api.github.com/user', {
 			headers: {
@@ -53,3 +52,6 @@ export const validateCookie = async (env, request) => {
 		};
 	}
 };
+
+export const buff_to_base64 = buff => btoa(String.fromCharCode.apply(null, buff));
+export const base64_to_buf = b64 => Uint8Array.from(atob(b64), c => c.charCodeAt(null));

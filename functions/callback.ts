@@ -1,4 +1,4 @@
-import { algo, cookieKey } from '../helpers/validateCookie';
+import { algo, base64_to_buf, buff_to_base64, cookieKey } from '../helpers/validateCookie';
 
 export const onRequest: PagesFunction<{
 	AUTH_STORE: KVNamespace;
@@ -43,13 +43,9 @@ export const onRequest: PagesFunction<{
 	const iv = crypto.getRandomValues(new Uint8Array(12));
 	const jwk = await crypto.subtle.exportKey('jwk', key);
 
-	await env.AUTH_STORE.put(
-		`keys:${kid}`,
-		JSON.stringify({ jwk, iv: new TextDecoder().decode(iv) }),
-		{
-			expirationTtl: 3600,
-		}
-	);
+	await env.AUTH_STORE.put(`keys:${kid}`, JSON.stringify({ jwk, iv: buff_to_base64(iv) }), {
+		expirationTtl: 3600,
+	});
 
 	const encrypted = await crypto.subtle.encrypt(
 		{ name: algo.name, iv },
@@ -57,7 +53,7 @@ export const onRequest: PagesFunction<{
 		new TextEncoder().encode(JSON.stringify(result))
 	);
 
-	await env.AUTH_STORE.put(`auth:${kid}`, new TextDecoder().decode(encrypted), {
+	await env.AUTH_STORE.put(`auth:${kid}`, encrypted, {
 		expirationTtl: 3600,
 	});
 
