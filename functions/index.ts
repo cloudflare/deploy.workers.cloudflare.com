@@ -25,7 +25,7 @@ export const onRequest: PagesFunction<{ AUTH_STORE: KVNamespace, CLIENT_ID: stri
   }
 
   if (url.pathname === "/") {
-    //response.headers.set("Cache-Control", "no-store")
+    response.headers.set("Cache-Control", "no-store")
     const rewriter = new HTMLRewriter().on("body", new EdgeStateEmbed({ accessToken, authed }));
     return rewriter.transform(response);
   } else {

@@ -1,7 +1,11 @@
-import {JWK, JWE} from "node-jose";
 import cookie from "cookie";
 
 export const cookieKey = "Authed-User";
+
+export const algo = {
+  name: 'AES-GCM',
+  length: 256,
+}
 
 export const validateCookie = async (env, request) => {
   try {
@@ -17,15 +21,15 @@ export const validateCookie = async (env, request) => {
       };
     }
 
-    const jsonKey = await env.AUTH_STORE.get(`keys:${auth}`);
-    const key = await JWK.asKey(JSON.parse(jsonKey));
-
+    const kvKey = await env.AUTH_STORE.get(`keys:${auth}`, "json");
     const storedAuth = await env.AUTH_STORE.get(`auth:${auth}`);
-    const { payload } = await JWE.createDecrypt(key).decrypt(
-      JSON.parse(storedAuth)
-    );
 
-    const { access_token: accessToken } = JSON.parse(payload);
+    const key = await crypto.subtle.importKey("jwk", kvKey.jwk, algo, true, ["decrypt"])
+
+    // TODO getting "Error: Cipher job failed"
+    const decrypted = await crypto.subtle.decrypt({name: algo.name, iv: new TextEncoder().encode(kvKey.iv)}, key, new TextEncoder().encode(storedAuth))
+    
+    const { access_token: accessToken } = JSON.parse(decrypted);
 
     const tokenResp = await fetch("https://api.github.com/user", {
       headers: {
@@ -39,6 +43,7 @@ export const validateCookie = async (env, request) => {
     }
     return { accessToken, authed: true };
   } catch (error) {
+    console.log(error)
     return {
       authed: false,
       error,

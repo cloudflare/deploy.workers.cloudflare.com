@@ -1,5 +1,4 @@
-import { JWK, JWE } from "node-jose";
-import { cookieKey } from "../helpers/validateCookie";
+import { algo, cookieKey } from "../helpers/validateCookie";
 
 export const onRequest: PagesFunction<{ AUTH_STORE: KVNamespace, CLIENT_ID: string, CLIENT_SECRET: string }> = async (context) => {
   // Contents of context object
@@ -34,23 +33,29 @@ export const onRequest: PagesFunction<{ AUTH_STORE: KVNamespace, CLIENT_ID: stri
     return Response.redirect(url.origin);
   }
 
-  const key = await JWK.createKey("oct", 256, { alg: "A256GCM" });
-  const jsonKey = key.toJSON(true);
-  await env.AUTH_STORE.put(`keys:${jsonKey.kid}`, JSON.stringify(jsonKey), {
+  const kid = crypto.randomUUID()
+  const key = await crypto.subtle.generateKey(
+    algo,
+    true,
+    ['encrypt', 'decrypt']
+  );
+
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const jwk = await crypto.subtle.exportKey("jwk", key)
+
+  await env.AUTH_STORE.put(`keys:${kid}`, JSON.stringify({jwk, iv: new TextDecoder().decode(iv)}), {
     expirationTtl: 3600,
   });
 
-  const encrypted = await JWE.createEncrypt(key)
-    .update(JSON.stringify(result))
-    .final();
+  const encrypted = await crypto.subtle.encrypt({name: algo.name, iv}, key, new TextEncoder().encode(JSON.stringify(result)))
 
-  await env.AUTH_STORE.put(`auth:${jsonKey.kid}`, JSON.stringify(encrypted), {
+  await env.AUTH_STORE.put(`auth:${kid}`, new TextDecoder().decode(encrypted), {
     expirationTtl: 3600,
   });
 
   const headers = {
     Location: url.origin + `?authed=true`,
-    "Set-cookie": `${cookieKey}=${jsonKey.kid}; Max-Age=3600; Secure; SameSite=Lax;`,
+    "Set-cookie": `${cookieKey}=${kid}; Max-Age=3600; Secure; SameSite=Lax;`,
   };
 
   return new Response(null, {
