@@ -102,13 +102,17 @@ const App = () => {
     set("forkedRepo", forkedRepo);
   };
 
+  // Check for edge case (pun intented) where the Workers fn has successfully
+  // validated the user's auth state, even if the KV store hasn't updated to
+  // persist the auth data. If that case is found, refresh the page and we
+  // should have a persisted auth value
   useEffect(() => {
-    if (document.cookie.includes("Authed-User")) {
-      const edge_state = JSON.parse(
-        document.querySelector("#edge_state").innerText
-      );
+    const el = document.querySelector("#edge_state")
+    if (el && el.innerText) {
+      const edgeStateInnerText = el.innerText
+      const _edgeState = JSON.parse(edgeStateInnerText);
 
-      if (!Object.keys(edge_state.state).length) {
+      if (_edgeState.state.authed && !_edgeState.state.accessToken) {
         window.location.reload();
       }
     }
@@ -117,6 +121,17 @@ const App = () => {
   useEffect(() => {
     const windowUrl = new URL(window.location);
     const url = windowUrl.searchParams.get("url");
+
+    // Validate URL query parameter actually legitimate to prevent XSS
+    try {
+      const parsedURL = new URL(url);
+      if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:") {
+        send("NO_URL");
+      }
+    } catch (_) {
+      send("NO_URL");
+    }
+
     const lsUrl = get("url");
     if (url) {
       setUrl(url);
@@ -150,7 +165,7 @@ const App = () => {
   }, [send, edgeState]);
 
   const fork = async ({ accountId, apiToken, event }) => {
-    const regex = /github.com\/(?<owner>[^\/]+)\/(?<repo>[^\/]+)/;
+    const regex = /github.com\/(?<owner>[^/]+)\/(?<repo>[^/]+)/;
     let urlToMatch = url;
     if (urlToMatch.endsWith("/")) urlToMatch = urlToMatch.slice(0, -1);
 
@@ -266,16 +281,6 @@ const App = () => {
           </div>
         </div>
         <Sidebar />
-      </div>
-      <div class="min-w-3xl mt-2 max-w-3xl w-full flex text-left">
-        <a
-          className="font-semibold text-blue-4 text-sm"
-          href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Feedback survey
-        </a>
       </div>
     </div>
   );

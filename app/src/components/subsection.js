@@ -7,7 +7,7 @@ export default ({ active, children, past = false, title }) => {
       <div className={classes}>
         <div
           className={`w-4 h-4 ${
-            past || active ? "bg-blue-4" : "bg-white border-2 border-gray-3"
+            past || active ? "bg-blue-4" : "bg-gray-4"
           } rounded-full -ml-12`}
         />
         <div className="ml-8">

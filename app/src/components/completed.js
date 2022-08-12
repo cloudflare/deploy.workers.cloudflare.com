@@ -111,18 +111,6 @@ export default ({ accountId, forkedRepo, url }) => (
           </div>
         </div>
       </div>
-      <div className="mt-4 border border-blue-6 bg-blue-7 text-blue-1 shadow px-6 py-4 rounded">
-        If you have any feedback, please take our{" "}
-        <a
-          className="font-semibold underline"
-          href="https://docs.google.com/forms/d/e/1FAIpQLScD29hGSr_ArVWuOhn7izRMw9aXfoCbkeud3qGUlZdgw32tFQ/viewform"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          short survey
-        </a>
-        .
-      </div>
     </div>
   </div>
 );
