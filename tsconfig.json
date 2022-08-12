@@ -3,6 +3,7 @@
     "functions/**/*"
   ],
   "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
     "target": "ES2020",
     "module": "esnext",
     "lib": [
@@ -18,7 +19,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
   },
   "include": [
     "src"
