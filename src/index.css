@@ -1,0 +1,143 @@
+:root {
+	--blue-1: #002b67;
+	--blue-2: #003681;
+	--blue-3: #276d9b;
+	--blue-4: #0051c3;
+	--blue-6: #add2eb;
+	--blue-7: #ebf4fa;
+	--blue-8: #b9d6ff;
+	--orange-5: #f1740a;
+	--orange-9: #fef1e6;
+	--gray-1: #36393a;
+	--gray-3: #62676a;
+	--gray-4: #767676;
+	--gray-7: #d5d7d8;
+	--gray-9: #f7f7f8;
+	--red-5: #fcf0f2;
+	--red-3: #f3bac3;
+	--red-1: #5c0801;
+	--red-8: #fed8d5;
+	--green-1: #104122;
+	--green-8: #bdefcf;
+	--indigo-1: #261a93;
+	--indigo-9: #f1f0fc;
+}
+
+.bg-blue-4 {
+	background-color: var(--blue-4);
+}
+.bg-blue-7 {
+	background-color: var(--blue-7);
+}
+.bg-gray-3 {
+	background-color: var(--gray-3);
+}
+.bg-gray-4 {
+	background-color: var(--gray-4);
+}
+.bg-orange-9 {
+	background-color: var(--orange-9);
+}
+.bg-red-5 {
+	background-color: var(--red-5);
+}
+
+.border-blue-4 {
+	border-color: var(--blue-4);
+}
+.border-blue-6 {
+	border-color: var(--blue-6);
+}
+.border-orange-5 {
+	border-color: var(--orange-5);
+}
+.border-red-3 {
+	border-color: var(--red-3);
+}
+.border-gray-7 {
+	border-color: var(--gray-7);
+}
+
+.text-blue-1 {
+	color: var(--blue-1);
+}
+.text-blue-4 {
+	color: var(--blue-4);
+}
+.text-gray-1 {
+	color: var(--gray-1);
+}
+.text-gray-3 {
+	color: var(--gray-3);
+}
+.text-gray-7 {
+	color: var(--gray-7);
+}
+.text-red-1 {
+	color: var(--red-1);
+}
+
+.label-green {
+	background-color: var(--green-8);
+	color: var(--green-1);
+}
+.label-red {
+	background-color: var(--red-8);
+	color: var(--red-1);
+}
+.label-indigo {
+	background-color: var(--indigo-9);
+	color: var(--indigo-1);
+}
+
+.text-header {
+	font-size: 32px;
+	font-weight: 600;
+}
+
+body {
+	margin: 0;
+	font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	font-size: 16px;
+	color: var(--gray-1);
+	background-color: var(--gray-9);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.rotate {
+	transform: rotate(180deg);
+	writing-mode: vertical-lr;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(359deg);
+	}
+}
+
+.loading {
+	animation: spin 1s linear infinite;
+}
+
+/* TEMPLATE PAGE STYLING */
+.project-card {
+	transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.project-card:hover {
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.project-card:active,
+.project-card:focus {
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	outline: blue;
+}
