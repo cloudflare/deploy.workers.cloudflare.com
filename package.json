@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@cloudflare/pages-plugin-sentry": "^1.0.0",
 		"cookie": "^0.4.0",
 		"tweetsodium": "^0.0.5"
 	},
