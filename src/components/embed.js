@@ -6,7 +6,7 @@ const Embed = ({ quiet = false, url, linkUrl = null }) => {
 	useEffect(() => {
 		const getEmbed = async () => {
 			try {
-				const resp = await fetch(`https://mbed.signalnerve.workers.dev/?url=${url}`);
+				const resp = await fetch(`https://mbed.developers.workers.dev/?url=${url}`);
 				const body = await resp.json();
 				setEmbed(body);
 				function decodeHtml(html) {
