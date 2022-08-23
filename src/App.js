@@ -190,7 +190,7 @@ const App = () => {
 		await fetch(`/secret`, {
 			body: JSON.stringify({
 				repo: repo.full_name,
-				secret_key: 'CF_ACCOUNT_ID',
+				secret_key: 'CLOUDFLARE_ACCOUNT_ID',
 				secret_value: accountId,
 			}),
 			method: 'POST',
@@ -205,7 +205,7 @@ const App = () => {
 		await fetch(`/secret`, {
 			body: JSON.stringify({
 				repo: repo.full_name,
-				secret_key: 'CF_API_TOKEN',
+				secret_key: 'CLOUDFLARE_API_TOKEN',
 				secret_value: apiToken,
 			}),
 			method: 'POST',
