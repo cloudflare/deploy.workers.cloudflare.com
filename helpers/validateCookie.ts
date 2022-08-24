@@ -12,11 +12,17 @@ export const validateCookie = async (env, request) => {
 		const cookieHeader = request.headers.get('Cookie') || request.headers.get('Set-cookie') || ''; // cookie.parse accepts string only, undefined throws error
 		const cookies = cookie.parse(cookieHeader);
 		const auth = cookies[cookieKey];
+		const url = new URL(request.url);
 
 		if (!auth) {
+			// @ts-ignore
+			const state = crypto.randomUUID();
+			const repositoryUrl = url.searchParams.get('url') || '';
+			await env.AUTH_STORE.put(`state:${state}`, repositoryUrl, { expirationTtl: 300 });
+
 			return {
 				authed: false,
-				redirectUrl: `https://github.com/login/oauth/authorize?client_id=${env.CLIENT_ID}&scope=public_repo`,
+				redirectUrl: `https://github.com/login/oauth/authorize?client_id=${env.CLIENT_ID}&scope=public_repo&state=${state}`,
 			};
 		}
 
