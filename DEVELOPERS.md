@@ -22,6 +22,8 @@ deploy:
 
 2. Add support for `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in your workflow:
 
+<strong>DEPRECATION</strong> notice: The Deploy to Workers will stop adding `CF_API_TOKEN` and `CF_ACCOUNT_ID` as GitHub Action secrets. Please change your repositories that use Deploy to Workers to pass `CLOUDFLARE_` prefixed secrets instead.
+
 ```yaml
 # Update "Publish" step from last code snippet
 - name: Publish

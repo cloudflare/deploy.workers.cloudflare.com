@@ -187,6 +187,21 @@ const App = () => {
 		const repo = await resp.json();
 		setForkedRepoWithCache(repo.full_name);
 
+		// deprecated secret
+		// todo: delete at the end of september
+		await fetch(`/secret`, {
+			body: JSON.stringify({
+				repo: repo.full_name,
+				secret_key: 'CF_ACCOUNT_ID',
+				secret_value: accountId,
+			}),
+			method: 'POST',
+			headers: {
+				'Authorization': `token ${edgeState.accessToken}`,
+				'User-Agent': 'Deploy-to-CF-Workers',
+			},
+		});
+
 		await fetch(`/secret`, {
 			body: JSON.stringify({
 				repo: repo.full_name,
@@ -201,6 +216,21 @@ const App = () => {
 		});
 
 		setAccountIdWithCache(accountId);
+
+		// deprecated secret
+		// todo: delete at the end of september
+		await fetch(`/secret`, {
+			body: JSON.stringify({
+				repo: repo.full_name,
+				secret_key: 'CF_API_TOKEN',
+				secret_value: apiToken,
+			}),
+			method: 'POST',
+			headers: {
+				'Authorization': `token ${edgeState.accessToken}`,
+				'User-Agent': 'Deploy-to-CF-Workers',
+			},
+		});
 
 		await fetch(`/secret`, {
 			body: JSON.stringify({
