@@ -1,12 +1,16 @@
 import { seal } from 'tweetsodium';
-import type { PluginData } from "@cloudflare/pages-plugin-sentry";
-import { base64 } from "rfc4648";
+import type { PluginData } from '@cloudflare/pages-plugin-sentry';
+import { base64 } from 'rfc4648';
 
-export const onRequest: PagesFunction<{
-	AUTH_STORE: KVNamespace;
-	CLIENT_ID: string;
-	CLIENT_SECRET: string;
-}, any, PluginData> = async context => {
+export const onRequest: PagesFunction<
+	{
+		AUTH_STORE: KVNamespace;
+		CLIENT_ID: string;
+		CLIENT_SECRET: string;
+	},
+	any,
+	PluginData
+> = async context => {
 	// Contents of context object
 	const {
 		request, // same as existing Worker API
@@ -28,12 +32,9 @@ export const onRequest: PagesFunction<{
 			const keyRespJson: any = await keyResp.json();
 			const { key, key_id } = keyRespJson;
 
-			const encrypted = seal(
-				base64.parse(body.secret_value),
-				base64.parse(key)
-			);
+			const encrypted = seal(base64.parse(body.secret_value), base64.parse(key));
 
-			const encrypted_value = base64.stringify(encrypted)
+			const encrypted_value = base64.stringify(encrypted);
 			const secretResp = await fetch(
 				`https://api.github.com/repos/${body.repo}/actions/secrets/${body.secret_key}`,
 				{
@@ -50,7 +51,7 @@ export const onRequest: PagesFunction<{
 			return new Response(null, { status: 400 });
 		}
 	} catch (err) {
-		data.sentry.captureException(err)
+		data.sentry.captureException(err);
 		return new Response(err.toString());
 	}
 };

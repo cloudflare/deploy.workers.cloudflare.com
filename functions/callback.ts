@@ -1,10 +1,15 @@
-import { algo, base64_to_buf, buff_to_base64, cookieKey } from '../helpers/validateCookie';
+import type { PluginData } from '@cloudflare/pages-plugin-sentry';
+import { algo, buff_to_base64, cookieKey } from '../helpers/validateCookie';
 
-export const onRequest: PagesFunction<{
-	AUTH_STORE: KVNamespace;
-	CLIENT_ID: string;
-	CLIENT_SECRET: string;
-}> = async context => {
+export const onRequest: PagesFunction<
+	{
+		AUTH_STORE: KVNamespace;
+		CLIENT_ID: string;
+		CLIENT_SECRET: string;
+	},
+	any,
+	PluginData
+> = async context => {
 	// Contents of context object
 	const {
 		request, // same as existing Worker API
@@ -16,7 +21,15 @@ export const onRequest: PagesFunction<{
 	} = context;
 
 	const url = new URL(request.url);
+	const state = url.searchParams.get('state');
 	const code = url.searchParams.get('code');
+
+	const repositoryUrl = await env.AUTH_STORE.get(`state:${state}`);
+
+	if (!repositoryUrl) {
+		data.sentry.captureMessage('user attempted to oauth without state');
+		return Response.redirect(url.origin);
+	}
 
 	const response = await fetch('https://github.com/login/oauth/access_token', {
 		method: 'POST',
@@ -37,6 +50,7 @@ export const onRequest: PagesFunction<{
 		return Response.redirect(url.origin);
 	}
 
+	// @ts-ignore
 	const kid = crypto.randomUUID();
 	const key = await crypto.subtle.generateKey(algo, true, ['encrypt', 'decrypt']);
 
@@ -58,7 +72,7 @@ export const onRequest: PagesFunction<{
 	});
 
 	const headers = {
-		'Location': url.origin + `?authed=true`,
+		'Location': url.origin + `?url=${repositoryUrl}&authed=true`,
 		'Set-cookie': `${cookieKey}=${kid}; Max-Age=3600; Secure; SameSite=Lax;`,
 	};
 
