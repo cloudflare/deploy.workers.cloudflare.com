@@ -17,8 +17,8 @@ export const validateCookie = async (env, request) => {
 		if (!auth) {
 			// @ts-ignore
 			const state = crypto.randomUUID();
-			const repositoryUrl = url.searchParams.get('url');
-			await env.AUTH_STORE.put(`state:${state}`, repositoryUrl);
+			const repositoryUrl = url.searchParams.get('url') || '';
+			await env.AUTH_STORE.put(`state:${state}`, repositoryUrl, { expirationTtl: 300 });
 
 			return {
 				authed: false,

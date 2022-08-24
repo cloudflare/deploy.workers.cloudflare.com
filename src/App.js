@@ -258,7 +258,7 @@ const App = () => {
 					<div className="py-4">{url ? <Embed url={url} /> : null}</div>
 					<div className="pt-4 flex-1 max-w-2xl">
 						<>
-							<GithubAuth current={current} />
+							<GithubAuth current={current} url={url} />
 							<Configure
 								accountIdState={[accountId, setAccountIdWithCache]}
 								apiTokenState={[apiToken, setApiToken]}

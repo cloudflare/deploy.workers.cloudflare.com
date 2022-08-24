@@ -2,7 +2,7 @@ import React from 'react';
 
 import Section from './section';
 
-export default ({ current }) => (
+export default ({ current, url }) => (
 	<Section
 		currentState={current}
 		state="login"
@@ -16,7 +16,7 @@ export default ({ current }) => (
 				<div className="mt-6 mb-8">
 					<a
 						className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-4 hover:bg-blue-4 focus:outline-none focus:border-blue-4 focus:shadow-outline-gray active:bg-blue-4 transition ease-in-out duration-150"
-						href="/login"
+						href={`/login?url=${url}`}
 					>
 						Authorize Workers
 					</a>
