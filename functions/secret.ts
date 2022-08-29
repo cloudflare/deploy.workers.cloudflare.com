@@ -32,7 +32,7 @@ export const onRequest: PagesFunction<
 			const keyRespJson: any = await keyResp.json();
 			const { key, key_id } = keyRespJson;
 
-			const encrypted = seal(base64.parse(body.secret_value), base64.parse(key));
+			const encrypted = seal(new TextEncoder().encode(body.secret_value), base64.parse(key));
 
 			const encrypted_value = base64.stringify(encrypted);
 			const secretResp = await fetch(
