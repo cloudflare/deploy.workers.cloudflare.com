@@ -12,7 +12,7 @@ const TEMPLATES = [
 export default () => (
 	<div className="grid grid-cols-1 gap-6">
 		{TEMPLATES.map(template => (
-			<Embed key={template} url={template} />
+			<Embed key={template} url={template} linkUrl={`/?url=${template}`} />
 		))}
 	</div>
 );
