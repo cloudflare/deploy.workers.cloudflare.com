@@ -2,7 +2,7 @@ export { default as AlertPanel } from './alert-panel';
 export { default as Deploy } from './deploy';
 export { default as Embed } from './embed';
 export { default as Completed } from './completed';
-export { default as Configure } from './configure';
+export { default as ConfigureAccount } from './configure-account';
 export { default as GithubAuth } from './github-auth';
 export {
 	accountId as AccountId,
@@ -23,3 +23,4 @@ export { default as Sidebar } from './sidebar';
 export { default as Subsection } from './subsection';
 export { default as Templates } from './templates';
 export { default as WorkflowStatus } from './workflow-status';
+export { default as ConfigureProject } from './configure-project';

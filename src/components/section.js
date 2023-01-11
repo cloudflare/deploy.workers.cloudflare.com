@@ -1,14 +1,20 @@
 import React from 'react';
 
-const MAX_STEP = 3;
-
-export default ({ active, completed, currentState, inactive, stepNumber, state, title }) => {
+export default ({
+	active,
+	completed,
+	currentState,
+	inactive,
+	stepNumber,
+	state,
+	title,
+	isLast,
+}) => {
 	if (!currentState) return null;
 
 	const isActive =
 		typeof state === 'object' ? state.includes(currentState.value) : currentState.value === state;
 	const isComplete = currentState.context.stepNumber > stepNumber;
-	const isLast = stepNumber === MAX_STEP;
 
 	const baseContainerClasses =
 		'font-bold -mt-1 -ml-4 mr-6 w-8 h-8 flex items-center justify-center font-mono font-semibold rounded-full';

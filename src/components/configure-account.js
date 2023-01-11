@@ -78,7 +78,7 @@ export default ({
 	return (
 		<Section
 			currentState={current}
-			state="configuring"
+			state="configuring_account"
 			title="Configure Cloudflare Account"
 			stepNumber={2}
 			active={
