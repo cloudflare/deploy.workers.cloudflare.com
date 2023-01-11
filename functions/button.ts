@@ -6,4 +6,3 @@ export const onRequest: PagesFunction = async context => {
 	const url = new URL(request.url);
 	return env.ASSETS.fetch(url.protocol + '//' + url.hostname + '/deploy.svg', request);
 };
-

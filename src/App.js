@@ -10,13 +10,22 @@ import { EdgeStateContext } from './edge_state';
 import {
 	Completed,
 	Deploy,
-	Configure,
+	ConfigureAccount,
+	ConfigureProject,
 	Embed,
 	GithubAuth,
 	Logo,
 	MissingUrl,
 	Sidebar,
 } from './components';
+
+function parseField(value) {
+	const { name, secret, descr } = JSON.parse(value);
+	if (!name || !secret || !descr) {
+		throw new Error('misconfigured fields');
+	}
+	return { name, secretName: secret, description: descr, value: '' };
+}
 
 export const appMachine = Machine(
 	{
@@ -31,7 +40,7 @@ export const appMachine = Machine(
 					},
 					NO_URL: 'missing_url',
 					URL: {
-						target: 'configuring',
+						target: 'configuring_account',
 						actions: 'incrementStep',
 					},
 					LS_FORKED: {
@@ -43,7 +52,7 @@ export const appMachine = Machine(
 			missing_url: {
 				on: {
 					URL: {
-						target: 'configuring',
+						target: 'configuring_account',
 						actions: 'incrementStep',
 					},
 				},
@@ -51,12 +60,20 @@ export const appMachine = Machine(
 			login: {
 				on: {
 					AUTH: {
-						target: 'configuring',
+						target: 'configuring_account',
 						actions: 'incrementStep',
 					},
 				},
 			},
-			configuring: {
+			configuring_account: {
+				on: {
+					SUBMIT: {
+						target: 'configuring_project',
+						actions: 'incrementStep',
+					},
+				},
+			},
+			configuring_project: {
 				on: {
 					SUBMIT: {
 						target: 'deploying_setup',
@@ -91,6 +108,7 @@ const App = () => {
 	const [forkedRepo, setForkedRepo] = useState(null);
 	const [edgeState] = useContext(EdgeStateContext);
 	const [debug, setDebug] = useState(false);
+	const [fields, setFields] = useState([]);
 
 	const setAccountIdWithCache = accountId => {
 		setAccountId(accountId);
@@ -162,7 +180,18 @@ const App = () => {
 		} else {
 			send('NO_AUTH');
 		}
+
+		const fields = windowUrl.searchParams.getAll('fields');
+		if (fields.length > 0) {
+			setFields(fields.map(parseField));
+		}
 	}, [send, edgeState]);
+
+	useEffect(() => {
+		if (current.value === 'configuring_project' && fields.length === 0) {
+			send('SUBMIT');
+		}
+	}, [current]);
 
 	const fork = async ({ accountId, apiToken, event }) => {
 		const regex = /github.com\/(?<owner>[^/]+)\/(?<repo>[^/]+)/;
@@ -244,8 +273,24 @@ const App = () => {
 				'User-Agent': 'Deploy-to-CF-Workers',
 			},
 		});
-		send('SUBMIT');
 
+		for (let i = 0, len = fields.length; i < len; i++) {
+			const field = fields[i];
+			await fetch('/variable', {
+				body: JSON.stringify({
+					repo: repo.full_name,
+					name: field.secretName,
+					value: field.value,
+				}),
+				method: 'POST',
+				headers: {
+					'Authorization': `token ${edgeState.accessToken}`,
+					'User-Agent': 'Deploy-to-CF-Workers',
+				},
+			});
+		}
+
+		send('SUBMIT');
 		return false;
 	};
 
@@ -289,12 +334,25 @@ const App = () => {
 					<div className="pt-4 flex-1 max-w-2xl">
 						<>
 							<GithubAuth current={current} url={url} />
-							<Configure
+							<ConfigureAccount
 								accountIdState={[accountId, setAccountIdWithCache]}
 								apiTokenState={[apiToken, setApiToken]}
 								complete={() => send('SUBMIT')}
 								current={current}
 							/>
+							{fields.length > 0 ? (
+								<ConfigureProject
+									current={current}
+									stepNumber={3}
+									fields={fields}
+									submit={fields => {
+										setFields(fields);
+										send('SUBMIT');
+									}}
+								/>
+							) : (
+								''
+							)}
 							<Deploy
 								accountId={accountId}
 								current={current}
@@ -302,6 +360,7 @@ const App = () => {
 								fork={event => fork({ accountId, apiToken, event })}
 								forkedRepo={forkedRepo}
 								send={send}
+								stepNumber={fields.length > 0 ? 4 : 3}
 							/>
 						</>
 					</div>
