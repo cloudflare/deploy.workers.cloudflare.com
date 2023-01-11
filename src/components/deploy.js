@@ -42,7 +42,7 @@ const machine = Machine({
 	},
 });
 
-export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
+export default ({ accountId, current, deploy, fork, forkedRepo, send, stepNumber }) => {
 	const [subcurrent, subsend] = useMachine(machine);
 
 	const submit = event => {
@@ -78,11 +78,11 @@ export default ({ accountId, current, deploy, fork, forkedRepo, send }) => {
 
 	return (
 		<Section
-			isFinal
 			title="Deploy with GitHub Actions"
 			currentState={current}
 			state={['deploying', 'deploying_setup']}
-			stepNumber={3}
+			stepNumber={stepNumber}
+			isLast
 			active={
 				<>
 					<Subsection
