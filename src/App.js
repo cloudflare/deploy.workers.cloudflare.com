@@ -185,9 +185,20 @@ const App = () => {
 			send('NO_AUTH');
 		}
 
-		const fields = windowUrl.searchParams.getAll('fields');
-		if (fields.length > 0) {
-			setFields(fields.map(parseField));
+		{
+			const cachedFields = get('fields');
+			if (cachedFields) {
+				setFields(cachedFields);
+			} else {
+				const fields = windowUrl.searchParams.getAll('fields');
+				if (fields.length > 0) {
+					set('accountId', accountId);
+
+					const parsedFields = fields.map(parseField);
+					setFields(parsedFields);
+					set('fields', parsedFields);
+				}
+			}
 		}
 	}, [send, edgeState]);
 
