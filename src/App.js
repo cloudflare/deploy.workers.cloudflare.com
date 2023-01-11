@@ -68,7 +68,7 @@ export const appMachine = Machine(
 			configuring_account: {
 				on: {
 					SUBMIT: {
-						target: 'configuring_project',
+						target: 'deploying_setup',
 						actions: 'incrementStep',
 					},
 				},
@@ -187,11 +187,11 @@ const App = () => {
 		}
 	}, [send, edgeState]);
 
-	useEffect(() => {
-		if (current.value === 'configuring_project' && fields.length === 0) {
-			send('SUBMIT');
-		}
-	}, [current]);
+	// useEffect(() => {
+	// 	if (current.value === 'configuring_project' && fields.length === 0) {
+	// 		send('SUBMIT');
+	// 	}
+	// }, [current]);
 
 	const fork = async ({ accountId, apiToken, event }) => {
 		const regex = /github.com\/(?<owner>[^/]+)\/(?<repo>[^/]+)/;
