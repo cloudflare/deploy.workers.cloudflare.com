@@ -67,7 +67,11 @@ export const appMachine = Machine(
 			},
 			configuring_account: {
 				on: {
-					SUBMIT: {
+					SUBMIT_CONFIGURE_PROJECT: {
+						target: 'configuring_project',
+						actions: 'incrementStep',
+					},
+					SUBMIT_DEPLOY: {
 						target: 'deploying_setup',
 						actions: 'incrementStep',
 					},
@@ -75,7 +79,7 @@ export const appMachine = Machine(
 			},
 			configuring_project: {
 				on: {
-					SUBMIT: {
+					CONFIGURE: {
 						target: 'deploying_setup',
 						actions: 'incrementStep',
 					},
@@ -186,12 +190,6 @@ const App = () => {
 			setFields(fields.map(parseField));
 		}
 	}, [send, edgeState]);
-
-	// useEffect(() => {
-	// 	if (current.value === 'configuring_project' && fields.length === 0) {
-	// 		send('SUBMIT');
-	// 	}
-	// }, [current]);
 
 	const fork = async ({ accountId, apiToken, event }) => {
 		const regex = /github.com\/(?<owner>[^/]+)\/(?<repo>[^/]+)/;
@@ -337,7 +335,13 @@ const App = () => {
 							<ConfigureAccount
 								accountIdState={[accountId, setAccountIdWithCache]}
 								apiTokenState={[apiToken, setApiToken]}
-								complete={() => send('SUBMIT')}
+								complete={() => {
+									if (fields.length > 0) {
+										send('SUBMIT_CONFIGURE_PROJECT');
+									} else {
+										send('SUBMIT_DEPLOY');
+									}
+								}}
 								current={current}
 							/>
 							{fields.length > 0 ? (
@@ -347,7 +351,7 @@ const App = () => {
 									fields={fields}
 									submit={fields => {
 										setFields(fields);
-										send('SUBMIT');
+										send('CONFIGURE');
 									}}
 								/>
 							) : (
