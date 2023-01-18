@@ -113,6 +113,8 @@ const App = () => {
 	const [edgeState] = useContext(EdgeStateContext);
 	const [debug, setDebug] = useState(false);
 	const [fields, setFields] = useState([]);
+	const [apiTokenTemplate, setApiTokenTemplate] = useState(null);
+	const [apiTokenName, setApiTokenName] = useState(null);
 
 	const setAccountIdWithCache = accountId => {
 		setAccountId(accountId);
@@ -185,6 +187,7 @@ const App = () => {
 			send('NO_AUTH');
 		}
 
+		// Fields
 		{
 			const cachedFields = get('fields');
 			if (cachedFields) {
@@ -197,6 +200,31 @@ const App = () => {
 					const parsedFields = fields.map(parseField);
 					setFields(parsedFields);
 					set('fields', parsedFields);
+				}
+			}
+		}
+
+		// API Token template and name
+		{
+			const cachedApiTokenTemplate = get('apiTokenTmpl');
+			if (cachedApiTokenTemplate) {
+				setApiTokenTemplate(cachedApiTokenTemplate);
+			} else {
+				const apiTokenTemplate = windowUrl.searchParams.get('apiTokenTmpl');
+				if (apiTokenTemplate) {
+					setApiTokenTemplate(apiTokenTemplate);
+					set('apiTokenTmpl', apiTokenTemplate);
+				}
+			}
+
+			const cachedApiTokenName = get('apiTokenName');
+			if (cachedApiTokenName) {
+				setApiTokenName(cachedApiTokenName);
+			} else {
+				const apiTokenName = windowUrl.searchParams.get('apiTokenName');
+				if (apiTokenName) {
+					setApiTokenName(apiTokenName);
+					set('apiTokenName', apiTokenName);
 				}
 			}
 		}
@@ -354,6 +382,8 @@ const App = () => {
 									}
 								}}
 								current={current}
+								apiTokenTemplate={apiTokenTemplate}
+								apiTokenName={apiTokenName}
 							/>
 							{fields.length > 0 ? (
 								<ConfigureProject

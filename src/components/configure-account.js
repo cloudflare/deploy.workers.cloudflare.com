@@ -43,6 +43,8 @@ export default ({
 	apiTokenState: [apiToken, setApiToken],
 	complete,
 	current,
+	apiTokenTemplate,
+	apiTokenName,
 }) => {
 	const [subcurrent, send] = useMachine(machine);
 
@@ -74,6 +76,12 @@ export default ({
 
 		return false;
 	};
+
+	let apiTokensLink = 'https://dash.cloudflare.com/profile/api-tokens';
+	if (apiTokenTemplate) {
+		apiTokensLink += '?permissionGroupKeys=' + apiTokenTemplate;
+		apiTokensLink += '&name=' + apiTokenName;
+	}
 
 	return (
 		<Section
@@ -122,8 +130,8 @@ export default ({
 										target="_blank"
 									>
 										Account ID and an API Token
-									</a>{' '}
-									with “Edit Workers” permissions.
+									</a>
+									{!apiTokenTemplate ? ' with “Edit Workers” permissions.' : '.'}
 								</p>
 							</div>
 							<div className="flex">
@@ -178,12 +186,14 @@ export default ({
 									</div>
 									<a
 										className="text-blue-4 text-sm font-semibold"
-										href="https://dash.cloudflare.com/profile/api-tokens"
+										href={apiTokensLink}
 										rel="noopener noreferrer"
 										target="_blank"
 									>
 										<div className="flex items-center">
-											<span className="mr-2">My Profile</span>
+											<span className="mr-2">
+												{apiTokenTemplate ? `Create "${apiTokenName}" API token` : 'My Profile'}
+											</span>
 											<ExternalLink />
 										</div>
 										<div
