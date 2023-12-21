@@ -150,7 +150,7 @@ const App = () => {
 		// Also validate that hostname is github.com to prevent loading from other URLs
 		try {
 			const parsedURL = new URL(url);
-			if (parsedURL.protocol !== 'http:' && parsedURL.protocol !== 'https:' || parsedUrl.hostname !== 'github.com') {
+			if (parsedURL.protocol !== 'http:' && parsedURL.protocol !== 'https:' || parsedURL.hostname !== 'github.com') {
 				send('NO_URL');
 			}
 		} catch (_) {
