@@ -24,5 +24,4 @@ yarn-error.log*
 
 src/main.css
 
-.DS_Store
 .dev.vars
