@@ -24,7 +24,7 @@ export default () => {
 
 				<h3 className="mb-2 font-semibold text-lg">Distributed network</h3>
 				<p>
-					Deploy serverless code to Cloudflare’s edge network across 200 cities and 95 countries.
+					Deploy serverless code to Cloudflare’s edge network across 300+ cities and 100+ countries.
 				</p>
 
 				<h3 className="mt-6 font-semibold mb-2 text-lg">Fast start</h3>
